@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.canvas.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.mr.checkers.client.FXMLController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: lightgreen;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.mr.checkers.client.FXMLController">
    <children>
       <Label fx:id="label" text="Opis" />
       <GridPane prefHeight="226.0" prefWidth="500.0">
@@ -16,6 +17,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="121" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
@@ -29,7 +31,7 @@
                                     <Label layoutX="22.0" layoutY="12.0" text="Grasz jako:" />
                                     <SplitPane layoutX="82.0" layoutY="1.0" prefHeight="41.0" prefWidth="175.0">
                                        <items>
-                                          <Label prefHeight="17.0" prefWidth="102.0" text="NAZWA_GRACZA" />
+                                          <Label fx:id="nazwagracza" prefHeight="17.0" prefWidth="102.0" text="NAZWA_GRACZA" />
                                        </items>
                                     </SplitPane>
                                  </children>
@@ -39,10 +41,13 @@
                         </SplitPane>
                      </children>
                   </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: yellow;" />
               </items>
             </SplitPane>
-            <Arc fill="DODGERBLUE" length="270.0" radiusX="100.0" radiusY="100.0" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Canvas height="200.0" style="-fx-translate-x: 33;" width="200.0" GridPane.rowIndex="1" />
+            <Button mnemonicParsing="false" text="AMMM" GridPane.rowIndex="1" />
+            <Circle fill="DODGERBLUE" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Arc fill="DODGERBLUE" length="270.0" radiusX="147.0" radiusY="85.0" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: yellow;" type="ROUND" GridPane.rowIndex="3" />
          </children>
       </GridPane>
    </children>

@@ -25,4 +25,19 @@ public class MainApp extends Application {
         launch(args);
     }
 
+    void wyslijwiadomosc(){
+        //funkcja1
+    }
+    void wykonanieruchu(){
+        //funkcja2
+    }
+    void zmiennick(){
+        //funkcja3
+    }
+    void dolaczdostolu(){
+        //funkcja4
+    }
+    void nowystol(){
+        //funkcja5
+    }
 }

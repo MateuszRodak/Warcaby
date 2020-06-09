@@ -7,7 +7,9 @@ public class FXMLController {
     
     @FXML
     private Label label;
-    
+    @FXML
+    private Label nazwagracza;
+
     public void initialize() {
         String javaVersion = System.getProperty("java.version");
         String javafxVersion = System.getProperty("javafx.version");
