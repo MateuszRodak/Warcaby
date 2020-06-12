@@ -7,8 +7,6 @@ import javafx.scene.control.TextField;
 public class FXMLController {
 
     @FXML
-    private Label label;
-    @FXML
     private Label sendMessage;
     @FXML
     private Label makeMove;
@@ -23,21 +21,19 @@ public class FXMLController {
     @FXML
     private TextField send_text;
 
-    public void initialize() {
-        String javaVersion = System.getProperty("java.version");
-        String javafxVersion = System.getProperty("javafx.version");
-        label.setText("Hello, JavaFX " + javafxVersion + "\nRunning on Java " + javaVersion + ".");
-    }
-
     public void sendMessage(){
-        sendMessage.setText("We will send the message to the universe!");
-        SocketClient socketClient = new SocketClient("192.168.1.20",9876);
+        sendMessage.setText("<-----Nie Działa");
+        SocketClient socketClient = new SocketClient();
+        socketClient.openSocket();
+
         socketClient.sendMessage(send_text.getText());
 
         String recievedMessage = socketClient.readMessage();
         nazwaGracza.setText(recievedMessage);
 
         socketClient.closeSocket();
+
+        sendMessage.setText("<-----Działa");
     }
 
     public void makeMove(){

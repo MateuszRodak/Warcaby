@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Objects;
 
 public class SocketClient {
     private Socket socket;
+
+    public SocketClient() {
+    }
 
     public SocketClient(String host, int port) {
         try {
@@ -37,6 +39,15 @@ public class SocketClient {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public SocketClient openSocket(){
+        try {
+            socket = new Socket("192.168.1.20",9876);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return this;
     }
 
     public void closeSocket(){
