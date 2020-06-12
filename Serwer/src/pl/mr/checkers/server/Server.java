@@ -3,77 +3,62 @@ import java.io.*;
 import java.net.*;
 
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.lang.ClassNotFoundException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+import java.io.*;
+import java.lang.ClassNotFoundException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+
 public class Server {
 
-    //initialize socket and input stream
-    private Socket          socket   = null;
-    private ServerSocket    server   = null;
-    private DataInputStream in       =  null;
 
-    // constructor with port
-    public Server(int port)
-    {
-        // starts server and waits for a connection
-        try
+    //static ServerSocket variable
+    private static ServerSocket server;
+    //socket server port on which it will listen
+    private static int port = 9876;
+
+    public static void main(String args[]) throws IOException, ClassNotFoundException{
+        //create the socket server object
+        server = new ServerSocket(port);
+        //keep listens indefinitely until receives 'exit' call or program terminates
+        while(true)
         {
-            server = new ServerSocket(port);
-            System.out.println("Server started");
+            System.out.println("WWaiting for the client request");
+            //creating socket and waiting for client connection
+            Socket socket = server.accept();
+            //read from socket to ObjectInputStream object
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+            //convert ObjectInputStream object to String
+            String message = (String) ois.readObject();
+            System.out.println("Message Received: " + message);
 
-            System.out.println("Waiting for a client ...");
+           //  if(message.equals("orzech"))
+         //     {
+          //           System.out.println("NowyNick: " + message);
+          //    }
 
-            socket = server.accept();
-            System.out.println("Client accepted");
-
-            // takes input from the client socket
-            in = new DataInputStream(
-                    new BufferedInputStream(socket.getInputStream()));
-
-            String line = "";
-
-            // reads message from client until "Over" is sent
-            while (!line.equals("Over"))
-            {
-                try
-                {
-                    line = in.readUTF();
-                    System.out.println(line);
-
-                }
-                catch(IOException i)
-                {
-                    System.out.println(i);
-                }
-            }
-            System.out.println("Closing connection");
-
-            // close connection
+            //create ObjectOutputStream object
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            //write object to Socket
+            oos.writeObject("Hi Client "+message);
+            //close resources
+            ois.close();
+            oos.close();
             socket.close();
-            in.close();
+            //terminate the server if client sends exit request
+            if(message.equalsIgnoreCase("exit")) break;
         }
-        catch(IOException i)
-        {
-            System.out.println(i);
-        }
+        System.out.println("Shutting down Socket server!!");
+        //close the ServerSocket object
+        server.close();
     }
 
-    public void playersListRefresh()
-    {
 
-    }
-
-    public void tableListRefresh()
-    {
-
-    }
-    public void tableRefresh(int TableNumer)
-    {
-
-    }
-    public void chatRefresh(int TableNumer)
-    {
-
-    }
-    public static void main(String[] args) {
-        Server server = new Server(5000);
-    }
 }
