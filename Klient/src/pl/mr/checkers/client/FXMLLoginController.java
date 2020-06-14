@@ -1,24 +1,76 @@
 package pl.mr.checkers.client;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseDragEvent;
 import javafx.stage.Stage;
+import pl.mr.checkers.model.GamePackage;
+import pl.mr.checkers.model.PackageType;
 
 import java.io.IOException;
 
-public class FXMLLoginController {
 
-    public void changeLoginScene(ActionEvent event) throws IOException {
-        Parent dupa = FXMLLoader.load(getClass().getResource("gameMenu.fxml"));
-        Scene scene = new Scene(dupa);
+public class FXMLLoginController extends AbstractController {
 
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+    @FXML
+    private TextField serverIP;
+    @FXML
+    private TextField serverPort;
+    @FXML
+    private TextField yourName;
+    @FXML
+    private Label errorMessage;
+
+    public void login(ActionEvent event) throws IOException {
+
+        errorMessage.setText("");
+
+        //sprawdzenie unikalnosci loginu
+        if (isBadValidate() || isWrongLogin()) {
+            return;
+        }
+
+        Parent menu = FXMLLoader.load(getClass().getResource("gameMenu.fxml"));
+        Scene scene = new Scene(menu);
+
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
     }
 
+    private boolean isWrongLogin() {
+        GamePackage sendPackage = new GamePackage();
+        sendPackage.setType(PackageType.LOGIN);
+        sendPackage.setContent(yourName.getText());
 
+        GamePackage getPackage = null;
+        try {
+            getPackage = sendToServer(sendPackage);
+        } catch (Exception e) {
+            e.printStackTrace();
+            errorMessage.setText("Server error connection");
+        }
+
+        String content = (String) getPackage.getContent();
+        if (content.equals("OK")) {
+            return false;
+        } else {
+            errorMessage.setText("This name already exists");
+            return true;
+        }
+    }
+
+    private boolean isBadValidate() {
+        if (serverIP.getText().isBlank() || serverPort.getText().isBlank() || yourName.getText().isBlank()) {
+            errorMessage.setText("Fill all fields!");
+            return true;
+        }
+        return false;
+    }
 }

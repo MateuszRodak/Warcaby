@@ -29,14 +29,14 @@ public class FXMLMenuController {
     @FXML
     private TextField send_text;
 
-    public void changeLoginScene(ActionEvent event) throws IOException {
-        Parent dupa = FXMLLoader.load(getClass().getResource("gameMenu.fxml"));
-        Scene scene = new Scene(dupa);
-
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setScene(scene);
-        window.show();
-    }
+//    public void changeLoginScene(ActionEvent event) throws IOException {
+//        Parent dupa = FXMLLoader.load(getClass().getResource("gameMenu.fxml"));
+//        Scene scene = new Scene(dupa);
+//
+//        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+//        window.setScene(scene);
+//        window.show();
+//    }
 
     public void sendMessage(){
         sendMessage.setText("<-----Nie Działa");

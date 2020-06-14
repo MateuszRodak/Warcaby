@@ -1,3 +1,7 @@
 .label {
     -fx-text-fill: #0000ff;
 }
+
+.errorMessage{
+    -fx-text-fill: red;
+}

@@ -1,5 +1,7 @@
 package pl.mr.checkers.client;
 
+import pl.mr.checkers.model.GamePackage;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -30,6 +32,16 @@ public class SocketClient {
         }
     }
 
+    public void sendPackage(GamePackage gamePackage) {
+        ObjectOutputStream outputStream = null;
+        try {
+            outputStream = new ObjectOutputStream(socket.getOutputStream());
+            outputStream.writeObject(gamePackage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public String readMessage() {
         ObjectInputStream inputStream = null;
         try {
@@ -41,9 +53,21 @@ public class SocketClient {
         return null;
     }
 
+    public GamePackage readPackage() {
+        ObjectInputStream inputStream = null;
+        try {
+            inputStream = new ObjectInputStream(socket.getInputStream());
+            return (GamePackage) inputStream.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public SocketClient openSocket(){
         try {
             socket = new Socket("192.168.1.20",9876);
+            socket.setSoTimeout(2000);
         } catch (IOException e) {
             e.printStackTrace();
         }
