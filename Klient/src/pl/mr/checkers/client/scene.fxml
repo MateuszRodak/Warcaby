@@ -2,55 +2,22 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: lightgreen;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.mr.checkers.client.FXMLController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.mr.checkers.client.FXMLController">
     <children>
-        <Label fx:id="label" text="Opis" />
         <GridPane prefHeight="226.0" prefWidth="500.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="356.0" minWidth="10.0" prefWidth="305.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="362.0" minWidth="10.0" prefWidth="195.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="356.0" minWidth="10.0" prefWidth="334.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="356.0" minWidth="10.0" prefWidth="70.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="362.0" minWidth="10.0" prefWidth="197.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="185.0" minHeight="10.0" prefHeight="96.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="406.0" minHeight="10.0" prefHeight="18.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="406.0" minHeight="10.0" prefHeight="392.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
-                    <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="303.0">
-                            <children>
-                                <SplitPane dividerPositions="0.5" layoutX="-4.0" layoutY="-4.0" orientation="VERTICAL" prefHeight="66.0" prefWidth="305.0">
-                                    <items>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="41.0" prefWidth="133.0">
-                                            <children>
-                                                <Label layoutX="14.0" layoutY="6.0" text="Grasz jako:" />
-                                                <SplitPane layoutX="73.0" layoutY="1.0" prefHeight="29.0" prefWidth="233.0">
-                                                    <items>
-                                                        <Label fx:id="nazwaGracza" prefHeight="33.0" prefWidth="222.0" text="NAZWA_GRACZA" />
-                                                    </items>
-                                                </SplitPane>
-                                            </children>
-                                        </AnchorPane>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="259.0">
-                                 <children>
-                                    <TextField fx:id="send_text" layoutX="85.0" layoutY="2.0" />
-                                    <Label layoutX="11.0" layoutY="6.0" text="Przedstaw się:" />
-                                        <Button layoutX="234.0" layoutY="2.0" mnemonicParsing="false" onMouseClicked="#sendMessage" text="Oto ja!" />
-                                 </children></AnchorPane>
-                                    </items>
-                                </SplitPane>
-                            </children>
-                        </AnchorPane>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: yellow;" />
-                    </items>
-                </SplitPane>
-                <Circle fill="DODGERBLUE" radius="20.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <Arc fill="DODGERBLUE" length="270.0" radiusX="121.0" radiusY="59.0" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" style="-fx-fill: yellow;" type="ROUND" GridPane.rowIndex="3" />
-                <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                <VBox prefHeight="94.0" prefWidth="199.0" style="-fx-background-color: orange;" GridPane.columnIndex="2">
                     <children>
                         <Label fx:id="sendMessage" onMouseClicked="#sendMessage" text="wyslij wiadomosc" />
                         <Label fx:id="makeMove" onMouseClicked="#makeMove" text="wykonanieruchu" />
@@ -59,6 +26,61 @@
                         <Label fx:id="newLobby" onMouseClicked="#newLobby" text="nowystol" />
                     </children>
                 </VBox>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="303.0" style="-fx-background-color: orange;">
+                      <children>
+                          <SplitPane dividerPositions="0.5" layoutX="-4.0" layoutY="-4.0" orientation="VERTICAL" prefHeight="66.0" prefWidth="305.0">
+                              <items>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="41.0" prefWidth="133.0">
+                                      <children>
+                                          <Label layoutX="14.0" layoutY="6.0" text="Grasz jako:" />
+                                          <SplitPane layoutX="73.0" layoutY="1.0" prefHeight="29.0" prefWidth="233.0">
+                                              <items>
+                                                  <Label fx:id="nazwaGracza" prefHeight="33.0" prefWidth="222.0" text="NAZWA_GRACZA" />
+                                              </items>
+                                          </SplitPane>
+                                      </children>
+                                  </AnchorPane>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="259.0">
+                           <children>
+                              <TextField fx:id="send_text" layoutX="85.0" layoutY="2.0" />
+                              <Label layoutX="11.0" layoutY="6.0" text="Przedstaw się:" />
+                                  <Button layoutX="234.0" layoutY="2.0" mnemonicParsing="false" onMouseClicked="#sendMessage" text="Oto ja!" />
+                           </children>
+                        </AnchorPane>
+                              </items>
+                          </SplitPane>
+                      </children>
+                  </AnchorPane>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: orange;" GridPane.columnIndex="1" />
+            <SplitPane dividerPositions="0.05412371134020619" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.rowIndex="2">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                     <children>
+                        <Label layoutX="127.0" layoutY="1.0" text="Lista Lobby:" />
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                     <children>
+                        <ListView layoutX="-5.0" layoutY="-7.0" prefHeight="373.0" prefWidth="305.0" style="-fx-background-color: lightblue;" />
+                        <Slider layoutX="277.0" layoutY="-2.0" orientation="VERTICAL" prefHeight="364.0" prefWidth="14.0" />
+                     </children></AnchorPane>
+              </items>
+            </SplitPane>
+            <SplitPane dividerPositions="0.04896907216494845" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                     <children>
+                        <Label layoutX="49.0" text="Lista Graczy:" />
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="278.0" prefWidth="162.0">
+                     <children>
+                        <ListView layoutX="1.0" layoutY="-2.0" prefHeight="373.0" prefWidth="164.0" style="-fx-background-color: lightblue;" />
+                        <Slider layoutX="141.0" layoutY="-7.0" orientation="VERTICAL" prefHeight="373.0" prefWidth="14.0" />
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
             </children>
         </GridPane>
     </children>
