@@ -30,7 +30,7 @@ public class Server {
         //keep listens indefinitely until receives 'exit' call or program terminates
         while(true)
         {
-            System.out.println("WWaiting for the client request");
+            System.out.println("WW Waiting for the client request");
             //creating socket and waiting for client connection
             Socket socket = server.accept();
             //read from socket to ObjectInputStream object
@@ -39,15 +39,19 @@ public class Server {
             String message = (String) ois.readObject();
             System.out.println("Message Received: " + message);
 
-           //  if(message.equals("orzech"))
-         //     {
-          //           System.out.println("NowyNick: " + message);
-          //    }
+
 
             //create ObjectOutputStream object
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             //write object to Socket
-            oos.writeObject("Hi Client "+message);
+           // if(message.equals("orzech"))
+         //   {
+                //  System.out.println("NowyNick: " + message);
+           //     oos.writeObject("orzech "+message);
+         //   }
+       //   else {
+              oos.writeObject("Hi Client "+message);
+        //  }
             //close resources
             ois.close();
             oos.close();

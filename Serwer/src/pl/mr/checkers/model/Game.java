@@ -1,13 +1,14 @@
-package pl.mr.checkers.server.model;
+package pl.mr.checkers.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Game {
+public class Game implements Serializable {
 
     private char[] board = new char[64];
     private String[] players = new String[2];
-
     private List<ChatMassage> chatMassages;
+    private boolean pending;
 
     public char[] getBoard() {
         return board;
@@ -31,5 +32,13 @@ public class Game {
 
     public void setChatMassages(List<ChatMassage> chatMassages) {
         this.chatMassages = chatMassages;
+    }
+
+    public boolean isPending() {
+        return pending;
+    }
+
+    public void setPending(boolean pending) {
+        this.pending = pending;
     }
 }

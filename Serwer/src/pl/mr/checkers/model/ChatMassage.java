@@ -1,6 +1,8 @@
-package pl.mr.checkers.server.model;
+package pl.mr.checkers.model;
 
-public class ChatMassage {
+import java.io.Serializable;
+
+public class ChatMassage implements Serializable {
 
     private String nick;
     private String message;
