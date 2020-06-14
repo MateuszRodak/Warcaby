@@ -1,4 +1,4 @@
-package pl.mr.checkers.server.model;
+package pl.mr.checkers.model;
 
 import java.util.HashMap;
 import java.util.List;
