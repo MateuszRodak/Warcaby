@@ -1,4 +1,4 @@
-package pl.mr.checkers.client;
+package pl.mr.checkers.client.gui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

@@ -1,5 +1,6 @@
-package pl.mr.checkers.client;
+package pl.mr.checkers.client.gui;
 
+import pl.mr.checkers.client.SocketClient;
 import pl.mr.checkers.model.GamePackage;
 
 public abstract class AbstractController {

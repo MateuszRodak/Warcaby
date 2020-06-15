@@ -1,4 +1,4 @@
-package pl.mr.checkers.client;
+package pl.mr.checkers.client.gui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,10 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseDragEvent;
 import javafx.stage.Stage;
-import pl.mr.checkers.model.GamePackage;
-import pl.mr.checkers.model.PackageType;
+import pl.mr.checkers.client.UserSession;
 
 import java.io.IOException;
 
@@ -36,6 +34,8 @@ public class FXMLLoginController extends AbstractController {
             return;
         }
 
+        UserSession.LOGIN = yourName.getText();
+
         Parent menu = FXMLLoader.load(getClass().getResource("gameMenu.fxml"));
         Scene scene = new Scene(menu);
 
@@ -45,25 +45,26 @@ public class FXMLLoginController extends AbstractController {
     }
 
     private boolean isWrongLogin() {
-        GamePackage sendPackage = new GamePackage();
-        sendPackage.setType(PackageType.LOGIN);
-        sendPackage.setContent(yourName.getText());
-
-        GamePackage getPackage = null;
-        try {
-            getPackage = sendToServer(sendPackage);
-        } catch (Exception e) {
-            e.printStackTrace();
-            errorMessage.setText("Server error connection");
-        }
-
-        String content = (String) getPackage.getContent();
-        if (content.equals("OK")) {
-            return false;
-        } else {
-            errorMessage.setText("This name already exists");
-            return true;
-        }
+//        GamePackage sendPackage = new GamePackage();
+//        sendPackage.setType(PackageType.LOGIN);
+//        sendPackage.setContent(yourName.getText());
+//
+//        GamePackage getPackage = null;
+//        try {
+//            getPackage = sendToServer(sendPackage);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            errorMessage.setText("Server error connection");
+//        }
+//
+//        String content = (String) getPackage.getContent();
+//        if (content.equals("OK")) {
+//            return false;
+//        } else {
+//            errorMessage.setText("This name already exists");
+//            return true;
+//        }
+        return false;
     }
 
     private boolean isBadValidate() {

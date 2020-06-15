@@ -1,16 +1,11 @@
-package pl.mr.checkers.client;
+package pl.mr.checkers.client.gui;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-
-import java.io.IOException;
+import javafx.scene.input.MouseEvent;
+import pl.mr.checkers.client.SocketClient;
+import pl.mr.checkers.client.UserSession;
 
 public class FXMLMenuController {
 
@@ -25,18 +20,14 @@ public class FXMLMenuController {
     @FXML
     private Label newLobby;
     @FXML
-    private Label nazwaGracza;
+    private Label userName;
     @FXML
     private TextField send_text;
 
-//    public void changeLoginScene(ActionEvent event) throws IOException {
-//        Parent dupa = FXMLLoader.load(getClass().getResource("gameMenu.fxml"));
-//        Scene scene = new Scene(dupa);
-//
-//        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-//        window.setScene(scene);
-//        window.show();
-//    }
+    public void init(MouseEvent event)  {
+        userName.setText(UserSession.LOGIN);
+
+    }
 
     public void sendMessage(){
         sendMessage.setText("<-----Nie Działa");
@@ -46,7 +37,7 @@ public class FXMLMenuController {
         socketClient.sendMessage(send_text.getText());
 
         String recievedMessage = socketClient.readMessage();
-        nazwaGracza.setText(recievedMessage);
+        userName.setText(recievedMessage);
 
         socketClient.closeSocket();
 
