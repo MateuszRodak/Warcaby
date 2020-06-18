@@ -10,14 +10,14 @@
       <Label layoutX="49.0" layoutY="235.0" text="Your name:" />
       <TextField fx:id="yourName" layoutX="151.0" layoutY="231.0" />
       <Label layoutX="49.0" layoutY="151.0" text="Server IP:" />
-      <TextField fx:id="serverIP" layoutX="151.0" layoutY="147.0" />
+      <TextField fx:id="serverIP" layoutX="151.0" layoutY="147.0" text="192.168.1.20" />
       <Label layoutX="218.0" layoutY="14.0" text="CHECKERS">
          <font>
             <Font size="35.0" />
          </font>
       </Label>
       <Label layoutX="49.0" layoutY="192.0" text="Server port:" />
-      <TextField fx:id="serverPort" layoutX="151.0" layoutY="188.0" />
+      <TextField fx:id="serverPort" layoutX="151.0" layoutY="188.0" text="9876" />
       <Label fx:id="errorMessage" layoutX="189.0" layoutY="269.0" styleClass="errorMessage" />
    </children>
 </Pane>

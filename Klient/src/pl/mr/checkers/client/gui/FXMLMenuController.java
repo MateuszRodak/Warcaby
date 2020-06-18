@@ -2,6 +2,7 @@ package pl.mr.checkers.client.gui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import pl.mr.checkers.client.SocketClient;
@@ -23,10 +24,11 @@ public class FXMLMenuController {
     private Label userName;
     @FXML
     private TextField send_text;
+    @FXML
+    private ListView lista;
 
     public void init(MouseEvent event)  {
         userName.setText(UserSession.LOGIN);
-
     }
 
     public void sendMessage(){

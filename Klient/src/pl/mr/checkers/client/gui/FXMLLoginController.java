@@ -10,6 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import pl.mr.checkers.client.UserSession;
+import pl.mr.checkers.model.GamePackage;
+import pl.mr.checkers.model.PackageType;
 
 import java.io.IOException;
 
@@ -45,26 +47,25 @@ public class FXMLLoginController extends AbstractController {
     }
 
     private boolean isWrongLogin() {
-//        GamePackage sendPackage = new GamePackage();
-//        sendPackage.setType(PackageType.LOGIN);
-//        sendPackage.setContent(yourName.getText());
-//
-//        GamePackage getPackage = null;
-//        try {
-//            getPackage = sendToServer(sendPackage);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            errorMessage.setText("Server error connection");
-//        }
-//
-//        String content = (String) getPackage.getContent();
-//        if (content.equals("OK")) {
-//            return false;
-//        } else {
-//            errorMessage.setText("This name already exists");
-//            return true;
-//        }
-        return false;
+        GamePackage sendPackage = new GamePackage();
+        sendPackage.setType(PackageType.LOGIN);
+        sendPackage.setContent(yourName.getText());
+
+        GamePackage getPackage = null;
+        try {
+            getPackage = sendToServer(sendPackage);
+        } catch (Exception e) {
+            e.printStackTrace();
+            errorMessage.setText("Server error connection");
+        }
+
+        String content = (String) getPackage.getContent();
+        if (content.equals("OK")) {
+            return false;
+        } else {
+            errorMessage.setText("This name already exists");
+            return true;
+        }
     }
 
     private boolean isBadValidate() {

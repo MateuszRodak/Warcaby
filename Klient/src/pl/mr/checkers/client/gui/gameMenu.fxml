@@ -63,6 +63,7 @@
                      <children>
                         <ListView layoutX="-5.0" layoutY="-7.0" prefHeight="373.0" prefWidth="305.0" style="-fx-background-color: lightblue;" />
                         <Slider layoutX="277.0" layoutY="-2.0" orientation="VERTICAL" prefHeight="364.0" prefWidth="14.0" />
+                        <ListView fx:id="lista" layoutX="14.0" layoutY="49.0" prefHeight="200.0" prefWidth="200.0" />
                      </children></AnchorPane>
               </items>
             </SplitPane>

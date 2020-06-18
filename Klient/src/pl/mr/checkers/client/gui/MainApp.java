@@ -16,7 +16,7 @@ public class MainApp extends Application {
         Scene mojaScena = new Scene(root);
         mojaScena.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
-        mojeStage.setTitle("JavaFX 11 is the Title");
+        mojeStage.setTitle("Checkers the game");
         mojeStage.setScene(mojaScena);
         mojeStage.show();
     }
