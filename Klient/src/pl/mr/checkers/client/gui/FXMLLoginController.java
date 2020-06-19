@@ -32,9 +32,9 @@ public class FXMLLoginController extends AbstractController {
         errorMessage.setText("");
 
         //sprawdzenie unikalnosci loginu
-        if (isBadValidate() || isWrongLogin()) {
-            return;
-        }
+//        if (isBadValidate() || isWrongLogin()) {
+//            return;
+//        }
 
         UserSession.LOGIN = yourName.getText();
 

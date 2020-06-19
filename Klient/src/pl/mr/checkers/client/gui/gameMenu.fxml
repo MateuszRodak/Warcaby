@@ -17,15 +17,7 @@
                 <RowConstraints maxHeight="406.0" minHeight="10.0" prefHeight="392.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <VBox prefHeight="94.0" prefWidth="199.0" style="-fx-background-color: orange;" GridPane.columnIndex="2">
-                    <children>
-                        <Label fx:id="sendMessage" onMouseClicked="#sendMessage" text="wyslij wiadomosc" />
-                        <Label fx:id="makeMove" onMouseClicked="#makeMove" text="wykonanieruchu" />
-                        <Label fx:id="changeNick" onMouseClicked="#changeNick" text="zmiennick" />
-                        <Label fx:id="joinLobby" onMouseClicked="#joinLobby" text="dolaczdostolu" />
-                        <Label fx:id="newLobby" onMouseClicked="#newLobby" text="nowystol" />
-                    </children>
-                </VBox>
+                <VBox prefHeight="94.0" prefWidth="199.0" style="-fx-background-color: orange;" GridPane.columnIndex="2" />
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="303.0" style="-fx-background-color: orange;">
                       <children>
                           <SplitPane dividerPositions="0.5" layoutX="-4.0" layoutY="-4.0" orientation="VERTICAL" prefHeight="66.0" prefWidth="305.0">
@@ -40,13 +32,7 @@
                                           </SplitPane>
                                       </children>
                                   </AnchorPane>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="259.0">
-                           <children>
-                              <TextField fx:id="send_text" layoutX="85.0" layoutY="2.0" />
-                              <Label layoutX="11.0" layoutY="6.0" text="Przedstaw się:" />
-                                  <Button layoutX="234.0" layoutY="2.0" mnemonicParsing="false" onMouseClicked="#sendMessage" text="Oto ja!" />
-                           </children>
-                        </AnchorPane>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="259.0" />
                               </items>
                           </SplitPane>
                       </children>
@@ -63,7 +49,7 @@
                      <children>
                         <ListView layoutX="-5.0" layoutY="-7.0" prefHeight="373.0" prefWidth="305.0" style="-fx-background-color: lightblue;" />
                         <Slider layoutX="277.0" layoutY="-2.0" orientation="VERTICAL" prefHeight="364.0" prefWidth="14.0" />
-                        <ListView fx:id="lista" layoutX="14.0" layoutY="49.0" prefHeight="200.0" prefWidth="200.0" />
+                        <ListView fx:id="gameList" layoutX="14.0" layoutY="49.0" prefHeight="200.0" prefWidth="200.0" />
                      </children></AnchorPane>
               </items>
             </SplitPane>
@@ -78,6 +64,7 @@
                      <children>
                         <ListView layoutX="1.0" layoutY="-2.0" prefHeight="373.0" prefWidth="164.0" style="-fx-background-color: lightblue;" />
                         <Slider layoutX="141.0" layoutY="-7.0" orientation="VERTICAL" prefHeight="373.0" prefWidth="14.0" />
+                        <ListView fx:id="playerList" layoutX="1.0" layoutY="1.0" prefHeight="237.0" prefWidth="133.0" />
                      </children>
                   </AnchorPane>
               </items>
