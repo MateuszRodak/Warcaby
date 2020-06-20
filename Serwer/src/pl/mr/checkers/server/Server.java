@@ -12,27 +12,26 @@ import java.io.ObjectOutputStream;
 import java.lang.ClassNotFoundException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class Server
 {
 
-
     private static ServerSocket SERVER_SOCKET;
     private static int PORT = 9876;
     private Map<String, Game> gameTables = new HashMap<>();
+    private Map<String, Date> gameTimeTable = new HashMap<>();
+    private Map<String, Date> userTables = new HashMap<>();
 
-    public static void main(String args[]) throws IOException, ClassNotFoundException{
+    public static void main(String args[]) throws IOException, ClassNotFoundException
+    {
 
         Server server = new Server();
 
         SERVER_SOCKET = new ServerSocket(PORT);
 
-        while(true)
+        while (true)
         {
             System.out.println("WW Waiting for the client request");
             Socket socket = SERVER_SOCKET.accept();
@@ -54,8 +53,8 @@ public class Server
 //            if(message.equalsIgnoreCase("exit")) break;
         }
 
-     //   System.out.println("Shutting down Socket server!!");
-      //  SERVER_SOCKET.close();
+        //   System.out.println("Shutting down Socket server!!");
+        //  SERVER_SOCKET.close();
     }
 
 
@@ -63,6 +62,7 @@ public class Server
     {
         PackageType type = gamePackage.getType();
         Object content = gamePackage.getContent();
+        String user = gamePackage.getUser();
         Object response = null;
 
         Game game = new Game();
@@ -71,20 +71,29 @@ public class Server
         gameTables.put("", game);
 
 
-        switch (type) {
-
+        switch (type)
+        {
             case LOGIN:
-                String request = (String) content;
-                response = checkLogin(request);
+                response = checkLogin(user);
                 break;
             case GET_GAME_LIST:
                 response = getGameList();
                 break;
+            case GET_USER_LIST:
+                response = getUserList();
+                break;
             case ACCESS_TO_GAME:
+                ////
+                break;
+            case CREATE_NEW_GAME:
+                response = createNewGame((String) content, user);
                 break;
             case GET_GAME:
+                ////g
+                //
                 break;
             case SEND_GAME:
+                ////h
                 break;
         }
 
@@ -96,17 +105,16 @@ public class Server
     {
         GamePackage ret = new GamePackage();
 
-        for (Map.Entry<String, Game> gameEntry : gameTables.entrySet()) {
-            Game game = gameEntry.getValue();
-
-            if((game.getPlayers().length > 0 && login.equals(game.getPlayers()[0])) || (game.getPlayers().length > 1 && login.equals(game.getPlayers()[1])))
+        for (String userName : userTables.keySet())
+        {
+            if (userName.equals(login))
             {
-                ret.setContent("error");
+                ret.setResult("ERROR1");
                 return ret;
             }
         }
-
-        ret.setContent("OK");
+        userTables.put(login, new Date());
+        ret.setResult("OK");
         return ret;
     }
 
@@ -117,8 +125,8 @@ public class Server
         GameInfo gameInfo;
 
 
-
-        for (Map.Entry<String, Game> gameEntry : gameTables.entrySet()) {
+        for (Map.Entry<String, Game> gameEntry : gameTables.entrySet())
+        {
             String key = gameEntry.getKey();
             Game game = gameEntry.getValue();
 
@@ -131,8 +139,76 @@ public class Server
         }
 
         ret.setContent(gameInfos);
-
+        ret.setResult("OK");
         return ret;
     }
+
+    private GamePackage getUserList()
+    {
+        GamePackage ret = new GamePackage();
+        Set<String> userList = new TreeSet<>();
+
+        userList.addAll(userTables.keySet());
+        ret.setContent(userList);
+        ret.setResult("OK");
+        return ret;
+    }
+
+    private GamePackage createNewGame(String gameName, String userName)
+    {
+        GamePackage ret = new GamePackage();
+        //Sprawdźić czy gra istieje
+        for (String nameOfTheGame : gameTables.keySet())
+        {
+            if (nameOfTheGame.equals(gameName))
+            {
+                ret.setResult("ERROR2");
+                return ret;
+            }
+        }
+
+        // jeżeli nie to dodać grę
+        Game game = new Game();
+        game.setPlayers(new String[]{userName, null});
+        game.setBoard(Utils.generateBoard());
+        game.setChatMassages(new ArrayList<>());
+        game.setPending(true);
+
+        gameTables.put(gameName, game);
+        gameTimeTable.put(gameName, new Date());
+
+        ret.setContent(game);
+        ret.setResult("OK");
+        return ret;
+    }
+
+    private GamePackage accessToGame(String gameName, String userName)
+    {
+        GamePackage ret = new GamePackage();
+
+        //znaleźć grę
+        Game game = gameTables.get(gameName);
+
+
+        //sprawdzić czy pending jest true
+        if (!game.isPending())
+            {
+                ret.setResult("ERROR3");
+                return ret;
+            }
+
+        //dołącz do gry
+        String[] players = game.getPlayers();
+        players[1] = userName;
+
+        gameTimeTable.put(gameName, new Date());
+        ret.setContent(game);
+        ret.setResult("OK");
+        return ret;
+    }
+
+
+
+
 
 }
