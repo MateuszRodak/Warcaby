@@ -93,8 +93,7 @@ public class Server
                 response = getGame((String) content);
                 break;
             case SEND_GAME:
-                ////h // wprowadza zmiany w planszy lub w czacie
-            //    response = sendGame((Game) content);
+                  response = sendGame((Game) content); // wprowadza zmiany w planszy lub w czacie
                 break;
         }
 
@@ -166,6 +165,7 @@ public class Server
     private GamePackage createNewGame(String gameName, String userName)
     {
         GamePackage ret = new GamePackage();
+
         //Sprawdźić czy gra o tej nazwie istieje
         for (String nameOfTheGame : gameTables.keySet())
         {
@@ -183,6 +183,7 @@ public class Server
         game.setChatMassages(new ArrayList<>());
         game.setPending(true);
         game.setName(gameName);
+       // game.setHostTurn(true);
 
         gameTables.put(gameName, game);
         gameTimeTable.put(gameName, new Date());
@@ -224,7 +225,7 @@ public class Server
 
         if(gameName == null)
         {
-            ret.setResult("ERROR4: Game Name is empty");
+            ret.setResult("ERROR4: Game not exists");
         }
         else
         {
@@ -233,8 +234,6 @@ public class Server
             ret.setResult("OK");
         }
 
-        //System.out.println("gameName= "+gameName);
-        //System.out.println("game= "+game.getBoard());
         return ret;
     }
 
@@ -242,19 +241,29 @@ public class Server
     private GamePackage sendGame(Game gameClient)
     {
         GamePackage ret = new GamePackage();
+        System.out.println("sendGame");
+             //wyszukanie stołu
+         //String gameClientname = gameClient.getName();
 
-        //wyszukanie stołu
+      //  if(gameClientname == null)
+        //{
+          //  ret.setResult("ERROR5: Game Name is empty");
+       // }
+       // else
+      //  {
+                //wyszukuje grę
+            gameTables.put(gameClient.getName(), gameClient);
+//            Game gameServer = gameTables.get(gameClientname);
 
-
-
-         String name = gameClient.getName();
-        //Game gameServer = gameTables.get;
-
+                //Podmienienie game
+//            gameServer = gameClient;
+//            gameServer.setChatMassages(gameClient.getChatMassages());
+//            gameServer.setBoard(gameClient.getBoard());
+          //  gameServer.setHostTurn(!gameServer.isHostTurn());
+      //  }
 
         ret.setResult("OK");
         return ret;
     }
-
-
 
 }
