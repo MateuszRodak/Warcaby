@@ -2,16 +2,23 @@ package pl.mr.checkers.client.gui;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import pl.mr.checkers.client.UserSession;
 import pl.mr.checkers.model.GameInfo;
 import pl.mr.checkers.model.GamePackage;
 import pl.mr.checkers.model.PackageType;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +32,14 @@ public class FXMLMenuController extends AbstractController {
     @FXML
     private ListView playerList;
 
+    public void play(ActionEvent event) throws IOException {
+        Parent menu = FXMLLoader.load(getClass().getResource("game.fxml"));
+        Scene scene = new Scene(menu);
+
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(scene);
+        window.show();
+    }
 
     public void init(MouseEvent event) {
         userName.setText(UserSession.LOGIN);
