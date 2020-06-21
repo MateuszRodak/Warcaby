@@ -5,10 +5,21 @@ import java.util.List;
 
 public class Game implements Serializable {
 
+    private String name;
     private char[] board = new char[64];
     private String[] players = new String[2];
     private List<ChatMassage> chatMassages;
     private boolean pending;
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 
     public char[] getBoard() {
         return board;

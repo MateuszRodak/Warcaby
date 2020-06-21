@@ -1,9 +1,6 @@
 package pl.mr.checkers.server;
 
-import pl.mr.checkers.model.Game;
-import pl.mr.checkers.model.GameInfo;
-import pl.mr.checkers.model.GamePackage;
-import pl.mr.checkers.model.PackageType;
+import pl.mr.checkers.model.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -93,11 +90,11 @@ public class Server
                 response = createNewGame((String) content, user);
                 break;
             case GET_GAME:
-                ////g  //pobiera planszę i czat
-                //
+                response = getGame((String) content);
                 break;
             case SEND_GAME:
                 ////h // wprowadza zmiany w planszy lub w czacie
+            //    response = sendGame((Game) content);
                 break;
         }
 
@@ -185,6 +182,7 @@ public class Server
         game.setBoard(Utils.generateBoard());
         game.setChatMassages(new ArrayList<>());
         game.setPending(true);
+        game.setName(gameName);
 
         gameTables.put(gameName, game);
         gameTimeTable.put(gameName, new Date());
@@ -220,22 +218,38 @@ public class Server
     }
 
         //UŻYTKOWNIK CHCE ZAKTUALIZOWAĆ PLANSZĘ
-    private GamePackage getGame()
+    private GamePackage getGame(String gameName)
     {
         GamePackage ret = new GamePackage();
 
-        //TUTAJ KOD
+        if(gameName == null)
+        {
+            ret.setResult("ERROR4: Game Name is empty");
+        }
+        else
+        {
+            Game game = gameTables.get(gameName); //wyszukuje grę
+            ret.setContent(game);
+            ret.setResult("OK");
+        }
 
-        ret.setResult("OK");
+        //System.out.println("gameName= "+gameName);
+        //System.out.println("game= "+game.getBoard());
         return ret;
     }
 
         //UŻYTKOWNIK WPROWADZA ZMIANY W GRZE LUB CZACIE
-    private GamePackage sendGame()
+    private GamePackage sendGame(Game gameClient)
     {
         GamePackage ret = new GamePackage();
 
-        //TUTAJ KOD
+        //wyszukanie stołu
+
+
+
+         String name = gameClient.getName();
+        //Game gameServer = gameTables.get;
+
 
         ret.setResult("OK");
         return ret;
