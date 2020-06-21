@@ -16,7 +16,14 @@
                 <RowConstraints maxHeight="463.0" minHeight="10.0" prefHeight="463.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <VBox prefHeight="94.0" prefWidth="199.0" style="-fx-background-color: orange;" GridPane.columnIndex="1" />
+                <VBox prefHeight="94.0" prefWidth="199.0" style="-fx-background-color: orange;" GridPane.columnIndex="1">
+               <children>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="errorMessage" layoutX="122.0" layoutY="84.0" text="Error" />
+                     </children>
+                  </AnchorPane>
+               </children></VBox>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="303.0" style="-fx-background-color: orange;">
                       <children>
                             <AnchorPane layoutY="93.0" minHeight="0.0" minWidth="0.0" prefHeight="29.0" prefWidth="303.0">
@@ -41,10 +48,10 @@
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="458.0" prefWidth="354.0">
                      <children>
                         <ListView fx:id="gameList" layoutY="-2.0" prefHeight="339.0" prefWidth="356.0" style="-fx-background-color: lightblue;" />
-                        <Label layoutY="337.0" prefHeight="48.0" prefWidth="281.0" style="-fx-background-color: lightgray;" text="..." textAlignment="CENTER" />
-                        <Button layoutX="281.0" layoutY="385.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="73.0" text="Create" />
-                        <TextField layoutY="385.0" prefHeight="48.0" prefWidth="281.0" style="-fx-background-color: EFE6DD;" />
-                        <Button layoutX="281.0" layoutY="337.0" mnemonicParsing="false" onAction="#play" prefHeight="48.0" prefWidth="73.0" text="Join" />
+                        <Label fx:id="selectedGameName" layoutY="337.0" prefHeight="48.0" prefWidth="281.0" style="-fx-background-color: lightgray;" text="..." textAlignment="CENTER" />
+                        <Button fx:id="createTable" layoutX="281.0" layoutY="385.0" mnemonicParsing="false" onAction="#createGame" prefHeight="48.0" prefWidth="73.0" text="Create" />
+                        <TextField fx:id="newTableName" layoutY="385.0" prefHeight="48.0" prefWidth="281.0" style="-fx-background-color: EFE6DD;" />
+                        <Button fx:id="joinToGame" layoutX="281.0" layoutY="337.0" mnemonicParsing="false" onAction="#join" prefHeight="48.0" prefWidth="73.0" text="Join" />
                      </children></AnchorPane>
               </items>
             </SplitPane>
@@ -69,7 +76,7 @@
                         <Label layoutX="14.0" layoutY="6.0" text="You play as:" />
                         <SplitPane layoutX="80.0" layoutY="1.0" prefHeight="29.0" prefWidth="222.0">
                            <items>
-                              <Label fx:id="userName1" prefHeight="33.0" prefWidth="222.0" text="PLAYER_NAME" textAlignment="CENTER" />
+                              <Label fx:id="userName" prefHeight="33.0" prefWidth="222.0" text="PLAYER_NAME" textAlignment="CENTER" />
                            </items>
                         </SplitPane>
                      </children>

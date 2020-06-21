@@ -31,10 +31,10 @@ public class FXMLLoginController extends AbstractController {
 
         errorMessage.setText("");
 
-        //sprawdzenie unikalnosci loginu
-//        if (isBadValidate() || isWrongLogin()) {
-//            return;
-//        }
+//        sprawdzenie unikalnosci loginu
+        if (isBadValidate() || isWrongLogin()) {
+            return;
+        }
 
         UserSession.LOGIN = yourName.getText();
 
@@ -49,20 +49,22 @@ public class FXMLLoginController extends AbstractController {
     private boolean isWrongLogin() {
         GamePackage sendPackage = new GamePackage();
         sendPackage.setType(PackageType.LOGIN);
-        sendPackage.setContent(yourName.getText());
+        sendPackage.setUser(yourName.getText());
 
-        GamePackage getPackage = null;
+        GamePackage getPackage;
         try {
             getPackage = sendToServer(sendPackage);
         } catch (Exception e) {
             e.printStackTrace();
             errorMessage.setText("Server error connection");
+            return true;
         }
 
-        String content = (String) getPackage.getContent();
-        if (content.equals("OK")) {
+        String result = getPackage.getResult();
+        if (result.equals("OK")) {
             return false;
         } else {
+            System.out.println(getPackage.getResult());
             errorMessage.setText("This name already exists");
             return true;
         }
