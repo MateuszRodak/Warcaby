@@ -1,6 +1,5 @@
 package pl.mr.checkers.server;
 
-
 import pl.mr.checkers.model.Game;
 import pl.mr.checkers.model.GameInfo;
 import pl.mr.checkers.model.GamePackage;
@@ -17,47 +16,52 @@ import java.util.*;
 
 public class Server
 {
-
     private static ServerSocket SERVER_SOCKET;
     private static int PORT = 9876;
     private Map<String, Game> gameTables = new HashMap<>();
     private Map<String, Date> gameTimeTable = new HashMap<>();
     private Map<String, Date> userTables = new HashMap<>();
 
+        //TWORZENIE SERWERA ORAZ PROWADZENIE NASŁUCHU NA SOCKECIE
     public static void main(String args[]) throws IOException, ClassNotFoundException
     {
-
         Server server = new Server();
-
         SERVER_SOCKET = new ServerSocket(PORT);
+        System.out.println("Waiting for the client request");
+
+        int counter =0; //licznik operacji na serwerze
 
         while (true)
-        {
-            System.out.println("WW Waiting for the client request");
-            Socket socket = SERVER_SOCKET.accept();
+            {
+                counter++;
+                    //Czekanie na akceptacje
+                Socket socket = SERVER_SOCKET.accept();
 
-            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-            GamePackage message = (GamePackage) ois.readObject();
+                    //Odbieranie wiadomości
+                ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+                GamePackage message = (GamePackage) ois.readObject();
 
-            System.out.println("Message Received: " + message.getType());
+                    //Wyświetlanie w konsoli serwera
+                System.out.println("\n ID:"+counter+" Date: "+new Date()+" | ---> User: "+ message.getUser());
+                System.out.println("Message Received: " + message.getType());
 
-            GamePackage returnMessage = server.process(message);
+                    //Tworzenie odpowiedzi dla Klienta
+                GamePackage returnMessage = server.process(message);
 
-            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            oos.writeObject(returnMessage);
+                    //Wysyłanie odpowiedzi do Klienta
+                ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                oos.writeObject(returnMessage);
 
-            ois.close();
-            oos.close();
-            socket.close();
-
-//            if(message.equalsIgnoreCase("exit")) break;
-        }
-
-        //   System.out.println("Shutting down Socket server!!");
-        //  SERVER_SOCKET.close();
+                    //Zamykanie socketa
+                ois.close();
+                oos.close();
+                socket.close();
+              //  SERVER_SOCKET.close();
+            }
     }
 
 
+        // !!! GŁÓWNY PROCESS ODCZYTANIA WIADOMOŚCI I PRZYGOTOWANIE ODPOWIEDZI
     private GamePackage process(GamePackage gamePackage)
     {
         PackageType type = gamePackage.getType();
@@ -65,12 +69,12 @@ public class Server
         String user = gamePackage.getUser();
         Object response = null;
 
-        Game game = new Game();
-        game.setPlayers(new String[]{"xx"});
+            //Tworzenie gier do testów
+      /*  Game game = new Game();
+        game.setPlayers(new String[]{"xx",""});
+        gameTables.put("Gra #1", game);*/
 
-        gameTables.put("", game);
-
-
+            // Odczytanie rodzaju polecenia przez serwer
         switch (type)
         {
             case LOGIN:
@@ -83,66 +87,73 @@ public class Server
                 response = getUserList();
                 break;
             case ACCESS_TO_GAME:
-                ////
+                response = accessToGame((String) content, user);
                 break;
             case CREATE_NEW_GAME:
                 response = createNewGame((String) content, user);
                 break;
             case GET_GAME:
-                ////g
+                ////g  //pobiera planszę i czat
                 //
                 break;
             case SEND_GAME:
-                ////h
+                ////h // wprowadza zmiany w planszy lub w czacie
                 break;
         }
-
 
         return (GamePackage) response;
     }
 
+
+        //SPRAWDZANIE CZY LOGIN JEST JUŻ NA LIŚCIE, JAK NIE TO DODAJEMY
     private GamePackage checkLogin(String login)
     {
         GamePackage ret = new GamePackage();
 
+            //Wyszukiwanie nazwy na liście
         for (String userName : userTables.keySet())
         {
             if (userName.equals(login))
             {
-                ret.setResult("ERROR1");
+                ret.setResult("ERROR1: login in use");
                 return ret;
             }
         }
+
+            //Dodaj nowego użytkownika
         userTables.put(login, new Date());
         ret.setResult("OK");
         return ret;
     }
 
+        //TWORZENIE PACZKI OBECNYCH NAZW GIER I UŻYTKOWNIKÓW BEZ PLANSZY
     private GamePackage getGameList()
     {
         GamePackage ret = new GamePackage();
         List<GameInfo> gameInfos = new ArrayList<>();
         GameInfo gameInfo;
 
-
+            //Wyciąganie z listy gier informacji do wyświetlenia i zamieszczanie w skrótowniku
         for (Map.Entry<String, Game> gameEntry : gameTables.entrySet())
         {
             String key = gameEntry.getKey();
             Game game = gameEntry.getValue();
 
             gameInfo = new GameInfo();
-            gameInfo.setTableName(key);
-            gameInfo.setPlayers(game.getPlayers());
-            gameInfo.setPending(game.isPending());
+            gameInfo.setTableName(key); //nazwa stołu
+            gameInfo.setPlayers(game.getPlayers()); //gracze przy stole
+            gameInfo.setPending(game.isPending()); //czy czeka na drugiego gracza
 
             gameInfos.add(gameInfo);
         }
 
+            //Wysyłanie skrótownika do klienta
         ret.setContent(gameInfos);
         ret.setResult("OK");
         return ret;
     }
 
+        //POBIERANIE NAZW WSZYSTKICH AKTYWNYCH UŻYTKOWNIKÓW
     private GamePackage getUserList()
     {
         GamePackage ret = new GamePackage();
@@ -154,15 +165,16 @@ public class Server
         return ret;
     }
 
+        //TWORZENIE STOŁU
     private GamePackage createNewGame(String gameName, String userName)
     {
         GamePackage ret = new GamePackage();
-        //Sprawdźić czy gra istieje
+        //Sprawdźić czy gra o tej nazwie istieje
         for (String nameOfTheGame : gameTables.keySet())
         {
             if (nameOfTheGame.equals(gameName))
             {
-                ret.setResult("ERROR2");
+                ret.setResult("ERROR2: Table Name alredy in use");
                 return ret;
             }
         }
@@ -182,22 +194,22 @@ public class Server
         return ret;
     }
 
+        //UŻYTKOWNIK CHCE DOŁĄCZYĆ DO GRY
     private GamePackage accessToGame(String gameName, String userName)
     {
         GamePackage ret = new GamePackage();
 
-        //znaleźć grę
+            //Znaleźć grę
         Game game = gameTables.get(gameName);
 
-
-        //sprawdzić czy pending jest true
+            //Sprawdzić czy gra jest w oczekiwaniu na gracza
         if (!game.isPending())
             {
-                ret.setResult("ERROR3");
+                ret.setResult("ERROR3: Game is full");
                 return ret;
             }
 
-        //dołącz do gry
+            //Dołącz do gry
         String[] players = game.getPlayers();
         players[1] = userName;
 
@@ -207,7 +219,27 @@ public class Server
         return ret;
     }
 
+        //UŻYTKOWNIK CHCE ZAKTUALIZOWAĆ PLANSZĘ
+    private GamePackage getGame()
+    {
+        GamePackage ret = new GamePackage();
 
+        //TUTAJ KOD
+
+        ret.setResult("OK");
+        return ret;
+    }
+
+        //UŻYTKOWNIK WPROWADZA ZMIANY W GRZE LUB CZACIE
+    private GamePackage sendGame()
+    {
+        GamePackage ret = new GamePackage();
+
+        //TUTAJ KOD
+
+        ret.setResult("OK");
+        return ret;
+    }
 
 
 
