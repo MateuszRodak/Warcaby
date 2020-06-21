@@ -10,6 +10,7 @@ public class Game implements Serializable {
     private String[] players = new String[2];
     private List<ChatMassage> chatMassages;
     private boolean pending;
+    private boolean hostTurn;
 
     public String getName()
     {
@@ -19,6 +20,16 @@ public class Game implements Serializable {
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public boolean isHostTurn()
+    {
+        return hostTurn;
+    }
+
+    public void setHostTurn(boolean hostTurn)
+    {
+        this.hostTurn = hostTurn;
     }
 
     public char[] getBoard() {

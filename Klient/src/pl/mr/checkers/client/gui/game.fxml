@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.mr.checkers.client.gui.FXMLGameController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseMoved="#init" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.mr.checkers.client.gui.FXMLGameController">
    <children>
       <Pane layoutX="19.0" layoutY="38.0" prefHeight="310.0" prefWidth="310.0" style="-fx-background-color: saddlebrown;" />
       <GridPane layoutX="24.0" layoutY="43.0" maxHeight="300.0" maxWidth="300.0" minHeight="300.0" minWidth="300.0" prefHeight="300.0" prefWidth="300.0">
@@ -94,6 +94,12 @@
             <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="7" GridPane.rowIndex="7" />
          </children>
       </GridPane>
-      <Button layoutX="432.0" layoutY="168.0" mnemonicParsing="false" onAction="#goBack" text="Wracamy" />
+      <Button layoutX="24.0" layoutY="541.0" mnemonicParsing="false" onAction="#goBack" text="Wracamy" />
+      <Label fx:id="user1" layoutX="39.0" layoutY="14.0" text="Gracz1" />
+      <Label fx:id="user2" layoutX="39.0" layoutY="361.0" text="Gracz2" />
+      <Label fx:id="gameName" layoutX="265.0" layoutY="6.0" text="Nazwa gry" />
+      <ListView fx:id="chat" layoutX="386.0" layoutY="93.0" prefHeight="200.0" prefWidth="200.0" />
+      <TextField fx:id="chatMessage" layoutX="386.0" layoutY="293.0" />
+      <Button fx:id="sendMessage" layoutX="535.0" layoutY="293.0" mnemonicParsing="false" onAction="#sendMessage" text="Wyślij" />
    </children>
 </Pane>

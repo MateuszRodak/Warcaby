@@ -39,7 +39,7 @@ public class FXMLMenuController extends AbstractController {
     private ListView<String> playerList;
     @FXML
     private Label errorMessage;
-//    @FXML
+    //    @FXML
 //    private Button joinToGame;
 //    @FXML
 //    private Button createTable;
@@ -66,7 +66,7 @@ public class FXMLMenuController extends AbstractController {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 int pending = newValue.indexOf("???");
-                if (!(pending >0)){
+                if (!(pending > 0)) {
                     selectedGameName.setText("");
                     return;
                 }
@@ -74,8 +74,6 @@ public class FXMLMenuController extends AbstractController {
                 int indexOf = newValue.indexOf(":");
                 String substring = newValue.substring(0, indexOf);
                 selectedGameName.setText(substring);
-//                System.out.println("Selected item: " + oldValue);
-//                System.out.println("Selected item: " + newValue);
             }
         });
         initialized = true;
@@ -134,12 +132,6 @@ public class FXMLMenuController extends AbstractController {
         }
         return stringList;
     }
-//
-//    public void selectGame(MouseEvent event) {
-////        System.out.println("cokolwiek");
-////        System.out.println(event.getEventType());
-////        System.out.println(event.getEventType().getName());
-//    }
 
     public void createGame(ActionEvent event) throws IOException {
         if (newTableName.getText().equals("")) {
