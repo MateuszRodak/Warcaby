@@ -183,7 +183,7 @@ public class Server
         game.setChatMassages(new ArrayList<>());
         game.setPending(true);
         game.setName(gameName);
-       // game.setHostTurn(true);
+        game.setHostTurn(true);
 
         gameTables.put(gameName, game);
         gameTimeTable.put(gameName, new Date());
@@ -241,28 +241,23 @@ public class Server
     private GamePackage sendGame(Game gameClient)
     {
         GamePackage ret = new GamePackage();
-        System.out.println("sendGame");
-             //wyszukanie stołu
-         //String gameClientname = gameClient.getName();
 
-      //  if(gameClientname == null)
-        //{
-          //  ret.setResult("ERROR5: Game Name is empty");
-       // }
-       // else
-      //  {
-                //wyszukuje grę
+        if(gameClient.getName() == null)
+        {
+            ret.setResult("ERROR5: Game Name is empty");
+        }
+        else
+        {
+            //Podmienienie game
             gameTables.put(gameClient.getName(), gameClient);
-//            Game gameServer = gameTables.get(gameClientname);
+            Game gameServer = gameTables.get(gameClient.getName());
 
-                //Podmienienie game
-//            gameServer = gameClient;
-//            gameServer.setChatMassages(gameClient.getChatMassages());
-//            gameServer.setBoard(gameClient.getBoard());
-          //  gameServer.setHostTurn(!gameServer.isHostTurn());
-      //  }
+            gameServer.setHostTurn(!gameServer.isHostTurn());
 
-        ret.setResult("OK");
+            System.out.println("Host Turn? : " + gameServer.isHostTurn());
+            ret.setResult("OK");
+        }
+
         return ret;
     }
 
