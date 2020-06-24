@@ -66,7 +66,11 @@ public class FXMLMenuController extends AbstractController {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 int pending = newValue.indexOf("???");
-                if (!(pending > 0)) {
+//                boolean xxx = newValue.contains(UserSession.LOGIN);
+                boolean yyy = newValue.contains("["+UserSession.LOGIN+" ");
+                boolean xxx = newValue.contains(" "+UserSession.LOGIN+"]");
+
+                if (!(pending > 0 || xxx || yyy)) {
                     selectedGameName.setText("");
                     return;
                 }

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseMoved="#init" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.mr.checkers.client.gui.FXMLGameController">
    <children>
       <Pane layoutX="19.0" layoutY="38.0" prefHeight="310.0" prefWidth="310.0" style="-fx-background-color: saddlebrown;" />
-      <GridPane layoutX="24.0" layoutY="43.0" maxHeight="300.0" maxWidth="300.0" minHeight="300.0" minWidth="300.0" prefHeight="300.0" prefWidth="300.0">
+      <GridPane fx:id="grid" layoutX="24.0" layoutY="43.0" maxHeight="300.0" maxWidth="300.0" minHeight="300.0" minWidth="300.0" prefHeight="300.0" prefWidth="300.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="137.0" minWidth="10.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="137.0" minWidth="10.0" />
@@ -28,70 +29,166 @@
           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <Pane minHeight="10.0" minWidth="10.0" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="4" GridPane.rowIndex="0" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="5" GridPane.rowIndex="0" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="6" GridPane.rowIndex="0" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="7" GridPane.rowIndex="0" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="7" GridPane.rowIndex="1" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="6" GridPane.rowIndex="2" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="7" GridPane.rowIndex="2" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="5" GridPane.rowIndex="3" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="6" GridPane.rowIndex="3" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="7" GridPane.rowIndex="3" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="4" GridPane.rowIndex="4" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="5" GridPane.rowIndex="4" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="6" GridPane.rowIndex="4" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="7" GridPane.rowIndex="4" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="4" GridPane.rowIndex="5" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="5" GridPane.rowIndex="5" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="6" GridPane.rowIndex="5" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="7" GridPane.rowIndex="5" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="3" GridPane.rowIndex="6" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="4" GridPane.rowIndex="6" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="5" GridPane.rowIndex="6" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="6" GridPane.rowIndex="6" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="7" GridPane.rowIndex="6" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="3" GridPane.rowIndex="7" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="4" GridPane.rowIndex="7" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="5" GridPane.rowIndex="7" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="6" GridPane.rowIndex="7" />
-            <Pane prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="7" GridPane.rowIndex="7" />
+            <Pane fx:id="pole0" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <Pane fx:id="pole1" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="1" GridPane.rowIndex="0">
+               <children>
+                  <ImageView fx:id="image0" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole2" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+            <Pane fx:id="pole3" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #696969;" GridPane.columnIndex="3" GridPane.rowIndex="0">
+               <children>
+                  <ImageView fx:id="image1" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole4" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+            <Pane fx:id="pole5" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="5" GridPane.rowIndex="0">
+               <children>
+                  <ImageView fx:id="image2" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole6" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+            <Pane fx:id="pole7" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="7" GridPane.rowIndex="0">
+               <children>
+                  <ImageView fx:id="image3" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole8" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="0" GridPane.rowIndex="1">
+               <children>
+                  <ImageView fx:id="image4" fitHeight="38.0" fitWidth="38.0" onMousePressed="#dupa" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole9" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Pane fx:id="pole10" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <children>
+                  <ImageView fx:id="image5" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole11" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Pane fx:id="pole12" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="4" GridPane.rowIndex="1">
+               <children>
+                  <ImageView fx:id="image6" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole13" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <Pane fx:id="pole14" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="6" GridPane.rowIndex="1">
+               <children>
+                  <ImageView fx:id="image7" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole15" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+            <Pane fx:id="pole16" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <Pane fx:id="pole17" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <ImageView fx:id="image8" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole18" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Pane fx:id="pole19" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="3" GridPane.rowIndex="2">
+               <children>
+                  <ImageView fx:id="image9" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole20" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <Pane fx:id="pole21" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="5" GridPane.rowIndex="2">
+               <children>
+                  <ImageView fx:id="image10" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole22" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+            <Pane fx:id="pole23" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="7" GridPane.rowIndex="2">
+               <children>
+                  <ImageView fx:id="image11" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole24" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="0" GridPane.rowIndex="3">
+               <children>
+                  <ImageView fx:id="image12" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole25" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Pane fx:id="pole26" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="2" GridPane.rowIndex="3">
+               <children>
+                  <ImageView fx:id="image13" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole27" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Pane fx:id="pole28" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="4" GridPane.rowIndex="3">
+               <children>
+                  <ImageView fx:id="image14" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole29" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+            <Pane fx:id="pole30" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="6" GridPane.rowIndex="3">
+               <children>
+                  <ImageView fx:id="image15" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole31" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="7" GridPane.rowIndex="3" />
+            <Pane fx:id="pole32" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <Pane fx:id="pole33" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <children>
+                  <ImageView fx:id="image16" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole34" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Pane fx:id="pole35" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="3" GridPane.rowIndex="4">
+               <children>
+                  <ImageView fx:id="image17" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole36" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+            <Pane fx:id="pole37" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="5" GridPane.rowIndex="4">
+               <children>
+                  <ImageView fx:id="image18" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole38" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+            <Pane fx:id="pole39" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="7" GridPane.rowIndex="4">
+               <children>
+                  <ImageView fx:id="image19" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole40" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="0" GridPane.rowIndex="5">
+               <children>
+                  <ImageView fx:id="image20" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole41" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Pane fx:id="pole42" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="2" GridPane.rowIndex="5">
+               <children>
+                  <ImageView fx:id="image21" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole43" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+            <Pane fx:id="pole44" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="4" GridPane.rowIndex="5">
+               <children>
+                  <ImageView fx:id="image22" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole45" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+            <Pane fx:id="pole46" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="6" GridPane.rowIndex="5">
+               <children>
+                  <ImageView fx:id="image23" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole47" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="7" GridPane.rowIndex="5" />
+            <Pane fx:id="pole48" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+            <Pane fx:id="pole49" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="1" GridPane.rowIndex="6">
+               <children>
+                  <ImageView fx:id="image24" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole50" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <Pane fx:id="pole51" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="3" GridPane.rowIndex="6">
+               <children>
+                  <ImageView fx:id="image25" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole52" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="4" GridPane.rowIndex="6" />
+            <Pane fx:id="pole53" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="5" GridPane.rowIndex="6">
+               <children>
+                  <ImageView fx:id="image26" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole54" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="6" GridPane.rowIndex="6" />
+            <Pane fx:id="pole55" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="7" GridPane.rowIndex="6">
+               <children>
+                  <ImageView fx:id="image27" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole56" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="0" GridPane.rowIndex="7">
+               <children>
+                  <ImageView fx:id="image28" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole57" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Pane fx:id="pole58" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="2" GridPane.rowIndex="7">
+               <children>
+                  <ImageView fx:id="image29" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole59" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+            <Pane fx:id="pole60" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="4" GridPane.rowIndex="7">
+               <children>
+                  <ImageView fx:id="image30" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole61" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="5" GridPane.rowIndex="7" />
+            <Pane fx:id="pole62" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="6" GridPane.rowIndex="7">
+               <children>
+                  <ImageView fx:id="image31" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+            <Pane fx:id="pole63" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="7" GridPane.rowIndex="7" />
          </children>
       </GridPane>
       <Button layoutX="24.0" layoutY="541.0" mnemonicParsing="false" onAction="#goBack" text="Wracamy" />
