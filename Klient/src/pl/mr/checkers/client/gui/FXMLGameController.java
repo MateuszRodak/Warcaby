@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -41,27 +42,12 @@ public class FXMLGameController extends AbstractController {
     @FXML
     private TextField chatMessage;
     @FXML
-    private Pane pole0;
-    @FXML
-    private Pane pole1;
-    @FXML
-    private Pane pole3;
-    @FXML
-    private Pane pole5;
-    @FXML
-    private Pane pole7;
-    @FXML
-    private Pane pole8;
-    @FXML
-    private Pane pole10;
-    @FXML
-    private Pane pole12;
-    @FXML
-    private Pane pole14;
-    @FXML
     private GridPane grid;
+    @FXML
+    private Button refresh;
 
     public void init(MouseEvent event) {
+
         if (initialized) {
             return;
         }
@@ -96,24 +82,38 @@ public class FXMLGameController extends AbstractController {
                     if (finalImageView[0].getImage() != null) {
                         String url = finalImageView[0].getImage().getUrl();
                         String substring = url.substring(url.lastIndexOf('/') + 1);
-                        if (substring.equals("pawnBlack.png") && !UserSession.PAWN_CLICKED) {
-                            finalImageView[0].setImage(UserSession.PAWN_BLACK_CLICKED);
-                            UserSession.PAWN_CLICKED = true;
-                        } else if (substring.equals("pawnBlackClicked.png")) {
-                            finalImageView[0].setImage(UserSession.PAWN_BLACK);
-                            UserSession.PAWN_CLICKED = false;
+                        if (UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[0]) && UserSession.GAME.isHostTurn()) {
+                            if (substring.equals("pawnBlack.png") && !UserSession.PAWN_CLICKED) {
+                                finalImageView[0].setImage(UserSession.PAWN_BLACK_CLICKED);
+                                UserSession.PAWN_CLICKED = true;
+                            } else if (substring.equals("pawnBlackClicked.png")) {
+                                finalImageView[0].setImage(UserSession.PAWN_BLACK);
+                                UserSession.PAWN_CLICKED = false;
+                            }
+                        } else if (UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[1]) && !UserSession.GAME.isHostTurn()) {
+                            if (substring.equals("pawnWhite.png") && !UserSession.PAWN_CLICKED) {
+                                finalImageView[0].setImage(UserSession.PAWN_WHITE_CLICKED);
+                                UserSession.PAWN_CLICKED = true;
+                            } else if (substring.equals("pawnWhiteClicked.png")) {
+                                finalImageView[0].setImage(UserSession.PAWN_WHITE);
+                                UserSession.PAWN_CLICKED = false;
+                            }
                         }
                     } else if (UserSession.PAWN_CLICKED) {
                         //ustawienie nowego
-                        finalImageView[0].setImage(UserSession.PAWN_BLACK);
+                        if (UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[0])) {
+                            finalImageView[0].setImage(UserSession.PAWN_BLACK);
+                        } else if (UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[1])) {
+                            finalImageView[0].setImage(UserSession.PAWN_WHITE);
+                        }
                         //usuniecie starego
-                        Pane oldPane = (Pane) childrens.get(UserSession.PAWN_POSITION);
+                        Pane oldPane = (Pane) childrens.get(UserSession.FIELD_POSITION);
                         ImageView oldPawn = (ImageView) oldPane.getChildren().get(0);
                         UserSession.PAWN_CLICKED = false;
                         oldPawn.setImage(null);
                     }
 
-                    UserSession.PAWN_POSITION = position;
+                    UserSession.FIELD_POSITION = position;
                 }
             });
 
@@ -126,13 +126,13 @@ public class FXMLGameController extends AbstractController {
             } else if (pawn == 'P') {
                 imageView.setImage(UserSession.PAWN_WHITE);
             } else if (pawn == 'd') {
-                imageView.setImage(UserSession.PAWN_WHITE);
+                imageView.setImage(UserSession.QUENN_BLACK);
             } else if (pawn == 'D') {
-                imageView.setImage(UserSession.PAWN_WHITE);
+                imageView.setImage(UserSession.QUENN_WHITE);
             }
         }
 
-        Game game = getGame();
+        Game game = getGame2();
 
         //ustawienie pionków na start
         char[] board = game.getBoard();
@@ -144,6 +144,7 @@ public class FXMLGameController extends AbstractController {
 
         //lista wiadomosci na chacie
         List<ChatMassage> chatMassages = game.getChatMassages();
+        System.out.println("dziala" + chatMassages.size());
 
         ///zaslepka
 //        ChatMassage chatMassage = new ChatMassage(UserSession.LOGIN, "ble ble");
@@ -151,11 +152,18 @@ public class FXMLGameController extends AbstractController {
 
         ObservableList<ChatMassage> observableGameList = FXCollections.observableList(chatMassages);
         chat.setItems(observableGameList);
+        chat.scrollTo(chatMassages.size());
 
         initialized = true;
     }
 
-    private Game getGame() {
+    public void getGame() {
+        getGame2();
+        initialized = false;
+        init(null);
+    }
+
+    public Game getGame2() {
         GamePackage sendPackage = new GamePackage();
         sendPackage.setType(PackageType.GET_GAME);
         sendPackage.setUser(UserSession.LOGIN);
@@ -173,7 +181,10 @@ public class FXMLGameController extends AbstractController {
             e.printStackTrace();
         }
 
-        return (Game) getPackage.getContent();
+        Game game = (Game) getPackage.getContent();
+        UserSession.GAME = game;
+
+        return game;
     }
 
     public void sendMessage() {
@@ -211,7 +222,13 @@ public class FXMLGameController extends AbstractController {
         window.show();
     }
 
-    public void dupa() {
-        System.out.println("dupa");
+    @Override
+    protected void completeTask() {
+        System.out.println("tu cos robie gra");
+        try {
+            getGame();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

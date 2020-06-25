@@ -14,6 +14,7 @@ import pl.mr.checkers.model.GamePackage;
 import pl.mr.checkers.model.PackageType;
 
 import java.io.IOException;
+import java.util.Random;
 
 
 public class FXMLLoginController extends AbstractController {
@@ -28,7 +29,6 @@ public class FXMLLoginController extends AbstractController {
     private Label errorMessage;
 
     public void login(ActionEvent event) throws IOException {
-
         errorMessage.setText("");
 
 //        sprawdzenie unikalnosci loginu
@@ -37,7 +37,7 @@ public class FXMLLoginController extends AbstractController {
         }
 
         UserSession.LOGIN = yourName.getText();
-
+// wyświetl menu po poprawnym zalogowaniu
         Parent menu = FXMLLoader.load(getClass().getResource("gameMenu.fxml"));
         Scene scene = new Scene(menu);
 
@@ -76,5 +76,15 @@ public class FXMLLoginController extends AbstractController {
             return true;
         }
         return false;
+    }
+    public void random(){
+        Random rand = new Random();
+        int n = rand.nextInt(999);
+        yourName.setText(String.valueOf(n));
+    }
+
+    @Override
+    protected void completeTask() {
+        System.out.println("nie robie nic");
     }
 }
