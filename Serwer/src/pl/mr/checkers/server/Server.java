@@ -259,32 +259,60 @@ public class Server extends TimerTask
     private GamePackage sendGame(Game gameClient)
     {
         GamePackage ret = new GamePackage();
+      //  String[] players;
+      //  String playerMove;
 
         if (gameClient.getName() == null)
         {
             ret.setResult("ERROR5: Game Name is empty");
-        } else
-        {
-            //Podmienienie game
-            gameTables.put(gameClient.getName(), gameClient);
-            Game gameServer = gameTables.get(gameClient.getName());
-
-            gameServer.setHostTurn(!gameServer.isHostTurn());
-
-            System.out.println("Host Turn? : " + gameServer.isHostTurn());
-            ret.setResult("OK");
         }
+        //else
+       // {
+          //  Game gameServer = gameTables.get(gameClient.getName());
+
+           // players = gameServer.getPlayers();
+
+           // if(gameServer.isHostTurn())
+        //    {
+        //        playerMove = players[0];
+       //    }
+        //    else
+         //   {
+         //       playerMove = players[1];
+         //   }
+
+           // if(playerMove == user)
+          //  {
+                //Podmienienie game
+                gameTables.put(gameClient.getName(), gameClient);
+                Game gameServer = gameTables.get(gameClient.getName());
+
+                boolean hostTurn = gameServer.isHostTurn();
+                gameServer.setHostTurn(!hostTurn);
+
+                System.out.println("Host Turn? : " + gameServer.isHostTurn());
+                ret.setResult("OK");
+          //  }
+          //  else
+          //  {
+         //       System.out.println("Nie twój ruch!");
+          //      ret.setResult("Nie twój ruch!");
+          //  }
+       // }
 
         return ret;
     }
+
+    static int counterClener = 0;
 
     @Override
     public void run()
     {
         //System.out.println("Timer task started at:"+new Date());
         completeTask();
+        counterClener++;
         //System.out.println("Timer task finished at:"+new Date());
-        System.out.println("Usunieto tych baranow co sie nie logujom!");
+        System.out.println("["+counterClener+"] Usunieto tych baranow co sie nie logujom!"+ " Date: " + new Date());
         long timestamp = new Date().getTime();
 
         //Usuwanie nieaktualnych uzytkowników
