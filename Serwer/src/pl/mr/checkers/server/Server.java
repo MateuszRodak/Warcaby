@@ -315,24 +315,31 @@ public class Server extends TimerTask
         System.out.println("["+counterClener+"] Usunieto tych baranow co sie nie logujom!"+ " Date: " + new Date());
         long timestamp = new Date().getTime();
 
-        //Usuwanie nieaktualnych uzytkowników
-        for (Map.Entry<String, Date> entry : userTables.entrySet())
-        {
-            if (entry.getValue().getTime() < timestamp - 300000)
+
+        try {
+            //Usuwanie nieaktualnych uzytkowników
+            for (Map.Entry<String, Date> entry : userTables.entrySet())
+                {
+                    if (entry.getValue().getTime() < timestamp - 300000)
+                        {
+                            System.out.println(" ---->>> Usunieto Gracza: " + entry.getKey());
+                            userTables.remove(entry.getKey());
+                        }
+                }
+
+            //Usuwanie nieaktualnych gier
+            for (Map.Entry<String, Date> entry : gameTimeTable.entrySet())
             {
-                System.out.println(" ---->>> Usunieto Gracza: " + entry.getKey());
-                userTables.remove(entry.getKey());
+                if (entry.getValue().getTime() < timestamp - 300000)
+                {
+                    System.out.println(" ---->>> Usunieto Gre: " + entry.getKey());
+                    gameTables.remove(entry.getKey());
+                    gameTimeTable.remove(entry.getKey());
+                }
             }
-        }
-        //Usuwanie nieaktualnych gier
-        for (Map.Entry<String, Date> entry : gameTimeTable.entrySet())
-        {
-            if (entry.getValue().getTime() < timestamp - 300000)
-            {
-                System.out.println(" ---->>> Usunieto Gre: " + entry.getKey());
-                gameTables.remove(entry.getKey());
-                gameTimeTable.remove(entry.getKey());
-            }
+        } catch (Exception e) {
+//            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
