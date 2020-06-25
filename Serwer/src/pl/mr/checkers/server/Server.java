@@ -9,9 +9,12 @@ import java.lang.ClassNotFoundException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
-public class Server
+public class Server extends TimerTask
 {
     private static ServerSocket SERVER_SOCKET;
     private static int PORT = 9876;
@@ -19,46 +22,52 @@ public class Server
     private Map<String, Date> gameTimeTable = new HashMap<>();
     private Map<String, Date> userTables = new HashMap<>();
 
-        //TWORZENIE SERWERA ORAZ PROWADZENIE NASŁUCHU NA SOCKECIE
+
+    //TWORZENIE SERWERA ORAZ PROWADZENIE NASŁUCHU NA SOCKECIE
     public static void main(String args[]) throws IOException, ClassNotFoundException
     {
         Server server = new Server();
         SERVER_SOCKET = new ServerSocket(PORT);
         System.out.println("Waiting for the client request");
 
-        int counter =0; //licznik operacji na serwerze
+        //włączenie timera
+        Timer timer = new Timer(true);
+        timer.scheduleAtFixedRate(server, 0, 10 * 1000);
+        System.out.println("TimerTask started");
+
+        int counter = 0; //licznik operacji na serwerze
 
         while (true)
-            {
-                counter++;
-                    //Czekanie na akceptacje
-                Socket socket = SERVER_SOCKET.accept();
+        {
+            counter++;
+            //Czekanie na akceptacje
+            Socket socket = SERVER_SOCKET.accept();
 
-                    //Odbieranie wiadomości
-                ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-                GamePackage message = (GamePackage) ois.readObject();
+            //Odbieranie wiadomości
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+            GamePackage message = (GamePackage) ois.readObject();
 
-                    //Wyświetlanie w konsoli serwera
-                System.out.println("\n ID:"+counter+" Date: "+new Date()+" | ---> User: "+ message.getUser());
-                System.out.println("Message Received: " + message.getType());
+            //Wyświetlanie w konsoli serwera
+            System.out.println("\n ID:" + counter + " Date: " + new Date() + " | ---> User: " + message.getUser());
+            System.out.println("Message Received: " + message.getType());
 
-                    //Tworzenie odpowiedzi dla Klienta
-                GamePackage returnMessage = server.process(message);
+            //Tworzenie odpowiedzi dla Klienta
+            GamePackage returnMessage = server.process(message);
 
-                    //Wysyłanie odpowiedzi do Klienta
-                ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-                oos.writeObject(returnMessage);
+            //Wysyłanie odpowiedzi do Klienta
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            oos.writeObject(returnMessage);
 
-                    //Zamykanie socketa
-                ois.close();
-                oos.close();
-                socket.close();
-              //  SERVER_SOCKET.close();
-            }
+            //Zamykanie socketa
+            ois.close();
+            oos.close();
+            socket.close();
+            //  SERVER_SOCKET.close();
+        }
     }
 
 
-        // !!! GŁÓWNY PROCESS ODCZYTANIA WIADOMOŚCI I PRZYGOTOWANIE ODPOWIEDZI
+    // !!! GŁÓWNY PROCESS ODCZYTANIA WIADOMOŚCI I PRZYGOTOWANIE ODPOWIEDZI
     private GamePackage process(GamePackage gamePackage)
     {
         PackageType type = gamePackage.getType();
@@ -66,12 +75,12 @@ public class Server
         String user = gamePackage.getUser();
         Object response = null;
 
-            //Tworzenie gier do testów
+        //Tworzenie gier do testów
       /*  Game game = new Game();
         game.setPlayers(new String[]{"xx",""});
         gameTables.put("Gra #1", game);*/
 
-            // Odczytanie rodzaju polecenia przez serwer
+        // Odczytanie rodzaju polecenia przez serwer
         switch (type)
         {
             case LOGIN:
@@ -93,7 +102,7 @@ public class Server
                 response = getGame((String) content);
                 break;
             case SEND_GAME:
-                  response = sendGame((Game) content); // wprowadza zmiany w planszy lub w czacie
+                response = sendGame((Game) content); // wprowadza zmiany w planszy lub w czacie
                 break;
         }
 
@@ -101,12 +110,12 @@ public class Server
     }
 
 
-        //SPRAWDZANIE CZY LOGIN JEST JUŻ NA LIŚCIE, JAK NIE TO DODAJEMY
+    //SPRAWDZANIE CZY LOGIN JEST JUŻ NA LIŚCIE, JAK NIE TO DODAJEMY
     private GamePackage checkLogin(String login)
     {
         GamePackage ret = new GamePackage();
 
-            //Wyszukiwanie nazwy na liście
+        //Wyszukiwanie nazwy na liście
         for (String userName : userTables.keySet())
         {
             if (userName.equals(login))
@@ -116,20 +125,20 @@ public class Server
             }
         }
 
-            //Dodaj nowego użytkownika
+        //Dodaj nowego użytkownika
         userTables.put(login, new Date());
         ret.setResult("OK");
         return ret;
     }
 
-        //TWORZENIE PACZKI OBECNYCH NAZW GIER I UŻYTKOWNIKÓW BEZ PLANSZY
+    //TWORZENIE PACZKI OBECNYCH NAZW GIER I UŻYTKOWNIKÓW BEZ PLANSZY
     private GamePackage getGameList()
     {
         GamePackage ret = new GamePackage();
         List<GameInfo> gameInfos = new ArrayList<>();
         GameInfo gameInfo;
 
-            //Wyciąganie z listy gier informacji do wyświetlenia i zamieszczanie w skrótowniku
+        //Wyciąganie z listy gier informacji do wyświetlenia i zamieszczanie w skrótowniku
         for (Map.Entry<String, Game> gameEntry : gameTables.entrySet())
         {
             String key = gameEntry.getKey();
@@ -143,13 +152,13 @@ public class Server
             gameInfos.add(gameInfo);
         }
 
-            //Wysyłanie skrótownika do klienta
+        //Wysyłanie skrótownika do klienta
         ret.setContent(gameInfos);
         ret.setResult("OK");
         return ret;
     }
 
-        //POBIERANIE NAZW WSZYSTKICH AKTYWNYCH UŻYTKOWNIKÓW
+    //POBIERANIE NAZW WSZYSTKICH AKTYWNYCH UŻYTKOWNIKÓW
     private GamePackage getUserList()
     {
         GamePackage ret = new GamePackage();
@@ -161,7 +170,7 @@ public class Server
         return ret;
     }
 
-        //TWORZENIE STOŁU
+    //TWORZENIE STOŁU
     private GamePackage createNewGame(String gameName, String userName)
     {
         GamePackage ret = new GamePackage();
@@ -171,7 +180,7 @@ public class Server
         {
             if (nameOfTheGame.equals(gameName))
             {
-                ret.setResult("ERROR2: Table Name alredy in use");
+                ret.setResult("ERROR2: Table Name already in use");
                 return ret;
             }
         }
@@ -193,41 +202,50 @@ public class Server
         return ret;
     }
 
-        //UŻYTKOWNIK CHCE DOŁĄCZYĆ DO GRY
+    //UŻYTKOWNIK CHCE DOŁĄCZYĆ DO GRY
     private GamePackage accessToGame(String gameName, String userName)
     {
         GamePackage ret = new GamePackage();
 
-            //Znaleźć grę
+        //Znaleźć grę
+
         Game game = gameTables.get(gameName);
 
-            //Sprawdzić czy gra jest w oczekiwaniu na gracza
-        if (!game.isPending())
-            {
-                ret.setResult("ERROR3: Game is full");
-                return ret;
-            }
+        if (game == null)
+        {
+            ret.setResult("ERROR37: Game not exists");
+            return ret;
+        }
 
-            //Dołącz do gry
+
+        //Sprawdzić czy gra jest w oczekiwaniu na gracza
+//        if (!game.isPending())
+        //     {
+        //         ret.setResult("ERROR3: Game is full");
+        //         return ret;
+        //    }
+
+        //Dołącz do gry
         String[] players = game.getPlayers();
-        players[1] = userName;
-
+        if (!(userName.equals(players[0]) || userName.equals(players[1])))
+        {
+            players[1] = userName;
+        }
         gameTimeTable.put(gameName, new Date());
         ret.setContent(game);
         ret.setResult("OK");
         return ret;
     }
 
-        //UŻYTKOWNIK CHCE ZAKTUALIZOWAĆ PLANSZĘ
+    //UŻYTKOWNIK CHCE ZAKTUALIZOWAĆ PLANSZĘ
     private GamePackage getGame(String gameName)
     {
         GamePackage ret = new GamePackage();
 
-        if(gameName == null)
+        if (gameName == null)
         {
             ret.setResult("ERROR4: Game not exists");
-        }
-        else
+        } else
         {
             Game game = gameTables.get(gameName); //wyszukuje grę
             ret.setContent(game);
@@ -237,16 +255,15 @@ public class Server
         return ret;
     }
 
-        //UŻYTKOWNIK WPROWADZA ZMIANY W GRZE LUB CZACIE
+    //UŻYTKOWNIK WPROWADZA ZMIANY W GRZE LUB CZACIE
     private GamePackage sendGame(Game gameClient)
     {
         GamePackage ret = new GamePackage();
 
-        if(gameClient.getName() == null)
+        if (gameClient.getName() == null)
         {
             ret.setResult("ERROR5: Game Name is empty");
-        }
-        else
+        } else
         {
             //Podmienienie game
             gameTables.put(gameClient.getName(), gameClient);
@@ -261,4 +278,45 @@ public class Server
         return ret;
     }
 
+    @Override
+    public void run()
+    {
+        //System.out.println("Timer task started at:"+new Date());
+        completeTask();
+        //System.out.println("Timer task finished at:"+new Date());
+        System.out.println("Usunieto tych baranow co sie nie logujom!");
+        long timestamp = new Date().getTime();
+
+        //Usuwanie nieaktualnych uzytkowników
+        for (Map.Entry<String, Date> entry : userTables.entrySet())
+        {
+            if (entry.getValue().getTime() < timestamp - 300000)
+            {
+                System.out.println(" ---->>> Usunieto Gracza: " + entry.getKey());
+                userTables.remove(entry.getKey());
+            }
+        }
+        //Usuwanie nieaktualnych gier
+        for (Map.Entry<String, Date> entry : gameTimeTable.entrySet())
+        {
+            if (entry.getValue().getTime() < timestamp - 300000)
+            {
+                System.out.println(" ---->>> Usunieto Gre: " + entry.getKey());
+                gameTables.remove(entry.getKey());
+                gameTimeTable.remove(entry.getKey());
+            }
+        }
+    }
+
+    private void completeTask()
+    {
+        try
+        {
+            //assuming it takes 20 secs to complete the task
+            Thread.sleep(60000);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+    }
 }

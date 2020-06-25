@@ -24,20 +24,33 @@ public class Utils
         board[21] = 'p';
         board[23] = 'p';
 
-        board[41] = 'P';
-        board[43] = 'P';
-        board[45] = 'P';
-        board[47] = 'P';
-        board[48] = 'P';
-        board[50] = 'P';
-        board[52] = 'P';
-        board[54] = 'P';
-        board[57] = 'P';
-        board[59] = 'P';
-        board[61] = 'P';
-        board[63] = 'P';
+        board[40] = 'P';
+        board[42] = 'P';
+        board[44] = 'P';
+        board[46] = 'P';
+        board[49] = 'P';
+        board[51] = 'P';
+        board[53] = 'P';
+        board[55] = 'P';
+        board[56] = 'P';
+        board[58] = 'P';
+        board[60] = 'P';
+        board[62] = 'P';
 
         return board;
     }
+
+  /*  public static void sleeper()
+    {
+        try
+            {
+                Thread.sleep(60000);
+            }
+        catch(InterruptedException ex)
+            {
+                Thread.currentThread().interrupt();
+            }
+        pl.mr.checkers.server.Server.deleteUselessPlayersAndGames();
+    }*/
 
 }
