@@ -23,12 +23,10 @@ import pl.mr.checkers.model.GamePackage;
 import pl.mr.checkers.model.PackageType;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class FXMLMenuController extends AbstractController {
+
     private boolean initialized;
 
     @FXML
@@ -39,42 +37,51 @@ public class FXMLMenuController extends AbstractController {
     private ListView<String> playerList;
     @FXML
     private Label errorMessage;
-    //    @FXML
-//    private Button joinToGame;
-//    @FXML
-//    private Button createTable;
     @FXML
     private TextField newTableName;
     @FXML
     private Label selectedGameName;
 
+    //wypełnianinie menu danymi z serwera
     public void init(MouseEvent event) {
+        //sprawdzanie czy już wypełnione
         if (initialized) {
             return;
         }
         errorMessage.setText("");
+
+        //pobranie z lokalnego pliku nazwy użytkownika podanego przy logowaniu
         userName.setText(UserSession.LOGIN);
+
+        //pobranie i wyświtlenie listy graczy
         List<String> userList = getUserList();
         ObservableList<String> observableUserList = FXCollections.observableList(userList);
         playerList.setItems(observableUserList);
 
+        //pobranie i wyświetlenie listy gier
         List<String> gameListStrings = getGameList();
         ObservableList<String> observableGameList = FXCollections.observableList(gameListStrings);
         gameList.setItems(observableGameList);
 
+        //po kliknieciu na rozgrywaną gre wyświetla nazwę poniżej w sekcji join
         gameList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                int pending = newValue.indexOf("???");
-//                boolean xxx = newValue.contains(UserSession.LOGIN);
-                boolean yyy = newValue.contains("["+UserSession.LOGIN+" ");
-                boolean xxx = newValue.contains(" "+UserSession.LOGIN+"]");
+                //WAŻNE nazwa gry ma postać: naszanazwagry: [gracz_pierwszy vs gracz_drugi]
 
+                //sprawdzenie czy przy stole jest wolne miejsce
+                int pending = newValue.indexOf("???");
+
+                //sprawdzenie czy jesteśmy przy stole
+                boolean yyy = newValue.contains("[" + UserSession.LOGIN + " ");
+                boolean xxx = newValue.contains(" " + UserSession.LOGIN + "]");
+
+                //sprawdzenie czy możemy dołączyć
                 if (!(pending > 0 || xxx || yyy)) {
                     selectedGameName.setText("");
                     return;
                 }
-
+                //wyciągnięcie nazwy zaznaczonej gry
                 int indexOf = newValue.indexOf(":");
                 String substring = newValue.substring(0, indexOf);
                 selectedGameName.setText(substring);
@@ -194,5 +201,15 @@ public class FXMLMenuController extends AbstractController {
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
+    }
+    public void random(){
+        Random rand = new Random();
+        int n = rand.nextInt(999);
+         newTableName.setText(String.valueOf(n));
+    }
+
+    @Override
+    protected void completeTask() {
+        System.out.println("tu cos robie menu");
     }
 }

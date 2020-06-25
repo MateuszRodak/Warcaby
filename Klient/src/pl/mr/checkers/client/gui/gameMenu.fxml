@@ -50,7 +50,7 @@
                         <ListView fx:id="gameList" layoutY="-2.0" prefHeight="339.0" prefWidth="356.0" style="-fx-background-color: lightblue;" />
                         <Label fx:id="selectedGameName" layoutY="337.0" prefHeight="48.0" prefWidth="281.0" style="-fx-background-color: lightgray;" text="..." textAlignment="CENTER" />
                         <Button fx:id="createTable" layoutX="281.0" layoutY="385.0" mnemonicParsing="false" onAction="#createGame" prefHeight="48.0" prefWidth="73.0" text="Create" />
-                        <TextField fx:id="newTableName" layoutY="385.0" prefHeight="48.0" prefWidth="281.0" style="-fx-background-color: EFE6DD;" />
+                        <TextField fx:id="newTableName" layoutY="385.0" onMouseEntered="#random" prefHeight="48.0" prefWidth="281.0" style="-fx-background-color: EFE6DD;" />
                         <Button fx:id="joinToGame" layoutX="281.0" layoutY="337.0" mnemonicParsing="false" onAction="#join" prefHeight="48.0" prefWidth="73.0" text="Join" />
                      </children></AnchorPane>
               </items>

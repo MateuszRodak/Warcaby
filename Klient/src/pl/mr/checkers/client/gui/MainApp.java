@@ -19,6 +19,7 @@ public class MainApp extends Application {
         mojeStage.setTitle("Checkers the game");
         mojeStage.setScene(mojaScena);
         mojeStage.show();
+
     }
 
     public static void main(String[] args) {

@@ -51,7 +51,7 @@
                </children></Pane>
             <Pane fx:id="pole8" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="0" GridPane.rowIndex="1">
                <children>
-                  <ImageView fx:id="image4" fitHeight="38.0" fitWidth="38.0" onMousePressed="#dupa" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="image4" fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" />
                </children></Pane>
             <Pane fx:id="pole9" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Pane fx:id="pole10" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="2" GridPane.rowIndex="1">
@@ -198,5 +198,6 @@
       <ListView fx:id="chat" layoutX="386.0" layoutY="93.0" prefHeight="200.0" prefWidth="200.0" />
       <TextField fx:id="chatMessage" layoutX="386.0" layoutY="293.0" />
       <Button fx:id="sendMessage" layoutX="535.0" layoutY="293.0" mnemonicParsing="false" onAction="#sendMessage" text="Wyślij" />
+      <Button fx:id="refresh" layoutX="460.0" layoutY="68.0" mnemonicParsing="false" onMousePressed="#getGame" text="Odśwież" />
    </children>
 </Pane>
