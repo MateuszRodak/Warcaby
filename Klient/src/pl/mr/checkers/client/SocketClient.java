@@ -66,7 +66,7 @@ public class SocketClient {
 
     public SocketClient openSocket(){
         try {
-            socket = new Socket("192.168.1.20",9876);
+            socket = new Socket(UserSession.SERVER_IP,UserSession.SERVER_PORT);
             socket.setSoTimeout(2000);
         } catch (IOException e) {
             e.printStackTrace();

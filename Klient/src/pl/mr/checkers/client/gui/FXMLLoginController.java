@@ -31,12 +31,15 @@ public class FXMLLoginController extends AbstractController {
     public void login(ActionEvent event) throws IOException {
         errorMessage.setText("");
 
+        UserSession.LOGIN = yourName.getText();
+        UserSession.SERVER_IP=serverIP.getText();
+        UserSession.SERVER_PORT= Integer.parseInt(serverPort.getText());
+
 //        sprawdzenie unikalnosci loginu
         if (isBadValidate() || isWrongLogin()) {
             return;
         }
 
-        UserSession.LOGIN = yourName.getText();
 // wyświetl menu po poprawnym zalogowaniu
         Parent menu = FXMLLoader.load(getClass().getResource("gameMenu.fxml"));
         Scene scene = new Scene(menu);
@@ -46,6 +49,7 @@ public class FXMLLoginController extends AbstractController {
         window.show();
     }
 
+    //sprawdzanie czy login się nie powtarza
     private boolean isWrongLogin() {
         GamePackage sendPackage = new GamePackage();
         sendPackage.setType(PackageType.LOGIN);
@@ -70,6 +74,7 @@ public class FXMLLoginController extends AbstractController {
         }
     }
 
+    //sprawdzanie czy pola nie są puste
     private boolean isBadValidate() {
         if (serverIP.getText().isBlank() || serverPort.getText().isBlank() || yourName.getText().isBlank()) {
             errorMessage.setText("Fill all fields!");
@@ -77,12 +82,17 @@ public class FXMLLoginController extends AbstractController {
         }
         return false;
     }
-    public void random(){
-        Random rand = new Random();
-        int n = rand.nextInt(999);
-        yourName.setText(String.valueOf(n));
-    }
+//
+//    //ustawienie losowego loginu
+//    public void random() {
+//        Random rand = new Random();
+//        int n = rand.nextInt(999);
+//        if (yourName.getText().isEmpty()) {
+//            yourName.setText(String.valueOf(n));
+//        }
+//    }
 
+    //metoda timera wykonywana cały czas
     @Override
     protected void completeTask() {
         System.out.println("nie robie nic");

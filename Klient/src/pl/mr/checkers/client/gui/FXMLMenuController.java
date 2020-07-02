@@ -90,6 +90,7 @@ public class FXMLMenuController extends AbstractController {
         initialized = true;
     }
 
+    //Pobranie z serwera listy graczy
     private List<String> getUserList() {
         GamePackage sendPackage = new GamePackage();
         sendPackage.setType(PackageType.GET_USER_LIST);
@@ -110,6 +111,7 @@ public class FXMLMenuController extends AbstractController {
         return new ArrayList<>(stringSet);
     }
 
+    //pobranie z serwera listy rozgrywanych gier
     private List<String> getGameList() {
         GamePackage sendPackage = new GamePackage();
         sendPackage.setType(PackageType.GET_GAME_LIST);
@@ -131,6 +133,7 @@ public class FXMLMenuController extends AbstractController {
         String nameGame;
         List<GameInfo> infoList = (List<GameInfo>) getPackage.getContent();
 
+        //ustawienie formatu zapisu na ekranie
         for (GameInfo gameInfo : infoList) {
             String player2 = gameInfo.getPlayers()[1];
 
@@ -144,9 +147,11 @@ public class FXMLMenuController extends AbstractController {
         return stringList;
     }
 
+    //dodanie nowego stołu do listy stołów w menu
     public void createGame(ActionEvent event) throws IOException {
+        //potrzebna nazwa stołu
         if (newTableName.getText().equals("")) {
-            errorMessage.setText("Pusta nazwa");
+            errorMessage.setText("Podaj nazwe");
             return;
         }
         String tableName = newTableName.getText().toUpperCase();
@@ -156,6 +161,8 @@ public class FXMLMenuController extends AbstractController {
         sendPackage.setContent(tableName);
 
         GamePackage getPackage;
+
+        //próba wyciągnięcia zgody od serwera na stworzenie stołu
         try {
             getPackage = sendToServer(sendPackage);
             if (!getPackage.getResult().equals("OK")) {
@@ -166,11 +173,16 @@ public class FXMLMenuController extends AbstractController {
             e.printStackTrace();
             return;
         }
+
+        //daj znać swojej aplikacji jaką nazwę wybrałeś
         UserSession.GAME = (Game) getPackage.getContent();
         UserSession.GAME_NAME = tableName;
+
+        //dołącz do utworzonej swojej gry
         play(event);
     }
 
+    //dołączenie do wybranej gry
     public void join(ActionEvent event) throws IOException {
         String gameNameText = selectedGameName.getText();
         GamePackage sendPackage = new GamePackage();
@@ -179,6 +191,8 @@ public class FXMLMenuController extends AbstractController {
         sendPackage.setContent(gameNameText);
 
         GamePackage getPackage;
+
+        //pozyskanie zgody serwera na dołączenie
         try {
             getPackage = sendToServer(sendPackage);
             if (!getPackage.getResult().equals("OK")) {
@@ -189,11 +203,16 @@ public class FXMLMenuController extends AbstractController {
             e.printStackTrace();
             return;
         }
+
+        //zapisanie Twojego wyboru
         UserSession.GAME = (Game) getPackage.getContent();
         UserSession.GAME_NAME = gameNameText;
+
+        //przełączenie okna na okno z grą
         play(event);
     }
 
+    //przejście do panelu gry
     private void play(ActionEvent event) throws IOException {
         Parent menu = FXMLLoader.load(getClass().getResource("game.fxml"));
         Scene scene = new Scene(menu);
@@ -202,12 +221,17 @@ public class FXMLMenuController extends AbstractController {
         window.setScene(scene);
         window.show();
     }
-    public void random(){
-        Random rand = new Random();
-        int n = rand.nextInt(999);
-         newTableName.setText(String.valueOf(n));
-    }
 
+//    //Wpisz losową nazwę
+//    public void random() {
+//        Random rand = new Random();
+//        int n = rand.nextInt(999);
+//        if (newTableName.getText().isEmpty()) {
+//            newTableName.setText(String.valueOf(n));
+//        }
+//    }
+
+    //metoda timera wykonywana cały czas
     @Override
     protected void completeTask() {
         System.out.println("tu cos robie menu");

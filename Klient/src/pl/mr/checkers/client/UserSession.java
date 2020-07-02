@@ -4,10 +4,12 @@ import javafx.scene.image.Image;
 import pl.mr.checkers.model.Game;
 
 public class UserSession {
+    public static String SERVER_IP;
+    public static int SERVER_PORT;
+
     public static String LOGIN;
     public static Game GAME;
     public static String GAME_NAME;
-//    public static int PAWN_POSITION;
     public static int FIELD_POSITION;
     public static boolean PAWN_CLICKED;
 

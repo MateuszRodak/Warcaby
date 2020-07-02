@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -25,6 +26,7 @@ import pl.mr.checkers.model.GamePackage;
 import pl.mr.checkers.model.PackageType;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -43,35 +45,49 @@ public class FXMLGameController extends AbstractController {
     private TextField chatMessage;
     @FXML
     private GridPane grid;
-    @FXML
-    private Button refresh;
 
+    //uzupełnienie okienek
     public void init(MouseEvent event) {
-
+        //sprawdzanie czy to już wypełnione
         if (initialized) {
             return;
         }
-//        errorMessage.setText("");
-        gameName.setText(UserSession.GAME_NAME);
+
+        //uzupełnienie nazwy gry
+        try {
+            gameName.setText(UserSession.GAME_NAME);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //ponumerowanie wszystkich kratek
         ObservableList<Node> childrens = grid.getChildren();
+
+        System.out.println("childrens=" + childrens.size());
 
         Pane pane;
         ImageView imageView = null;
 
+        //pobranie z serwera pozycji pionków
         char[] gameBoard = UserSession.GAME.getBoard();
         char pawn;
+        System.out.println("GAMEboard=" + gameBoard.length);
+        System.out.println("GAMEboard=" + Arrays.toString(gameBoard));
+
+        //wyświetlenie pionków na planszy
         for (int i = 0; i < gameBoard.length; i++) {
             int position = i;
             pawn = gameBoard[i];
-
             pane = (Pane) childrens.get(i);
             Pane finalPane = pane;
+
+            //ustawienie wszystkich obrazków pionków w kratkę
             final ImageView[] finalImageView = {imageView};
+
+            //zaznaczanie pionków kliknięciem
             pane.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    System.out.println("pole " + position);
-
+//                    System.out.println("pole " + position);
                     ObservableList<Node> children = finalPane.getChildren();
                     if (children.isEmpty()) {
                         return;
@@ -111,6 +127,7 @@ public class FXMLGameController extends AbstractController {
                         ImageView oldPawn = (ImageView) oldPane.getChildren().get(0);
                         UserSession.PAWN_CLICKED = false;
                         oldPawn.setImage(null);
+                        wyslij();
                     }
 
                     UserSession.FIELD_POSITION = position;
@@ -187,11 +204,13 @@ public class FXMLGameController extends AbstractController {
         return game;
     }
 
+    //wysłanie wiadomości do czatu
     public void sendMessage() {
         GamePackage sendPackage = new GamePackage();
         sendPackage.setType(PackageType.SEND_GAME);
         sendPackage.setUser(UserSession.LOGIN);
 
+        //pobranie treści wiadomości
         ChatMassage chat = new ChatMassage(UserSession.LOGIN, chatMessage.getText());
         UserSession.GAME.getChatMassages().add(chat);
         sendPackage.setContent(UserSession.GAME);
@@ -199,20 +218,46 @@ public class FXMLGameController extends AbstractController {
         Game game = UserSession.GAME;
 
         GamePackage getPackage;
+        //wysyłanie wiadomości na serwer
         try {
             getPackage = sendToServer(sendPackage);
             if (!getPackage.getResult().equals("OK")) {
                 System.out.println(getPackage.getResult());
-//                errorMessage.setText("Can't download user list");
+//                errorMessage.setText("Nie można wysłać wiadomosci :(");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //wyczyszczenie pola wiadomości
         chatMessage.setText("");
         initialized = false;
         init(null);
     }
 
+    public void sendGame() {
+        GamePackage sendPackage = new GamePackage();
+        sendPackage.setType(PackageType.SEND_GAME);
+        sendPackage.setUser(UserSession.LOGIN);
+        sendPackage.setContent(UserSession.GAME);
+
+        GamePackage getPackage;
+        //wysyłanie wiadomości na serwer
+        try {
+            getPackage = sendToServer(sendPackage);
+            if (!getPackage.getResult().equals("OK")) {
+                System.out.println(getPackage.getResult());
+//                errorMessage.setText("Nie można wysłać wiadomosci :(");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //wyczyszczenie pola wiadomości
+        chatMessage.setText("");
+        initialized = false;
+        init(null);
+    }
+
+    //powrót do menu gry
     public void goBack(ActionEvent event) throws IOException {
         Parent menu = FXMLLoader.load(getClass().getResource("gameMenu.fxml"));
         Scene scene = new Scene(menu);
@@ -222,13 +267,59 @@ public class FXMLGameController extends AbstractController {
         window.show();
     }
 
+    //odświeżanie gry co jakiś czas
     @Override
     protected void completeTask() {
         System.out.println("tu cos robie gra");
-        try {
-            getGame();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if ((UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[0]) && !UserSession.GAME.isHostTurn()) || (UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[1]) && UserSession.GAME.isHostTurn())) {
+            try {
+                getGame();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    private void convertTo() {
+        ObservableList<Node> childrens = grid.getChildren();
+
+        Pane pane;
+        ImageView imageView = null;
+
+        //pobranie z serwera pozycji pionków
+        char[] gameBoard = UserSession.GAME.getBoard();
+        char pawn;
+
+        //wyświetlenie pionków na planszy
+        for (int i = 0; i < childrens.size(); i++) {
+            pane = (Pane) childrens.get(i);
+            imageView = (ImageView) pane.getChildren().get(0);
+            Image image = imageView.getImage();
+
+            if (image == null) {
+                gameBoard[i] = 0;
+                continue;
+            }
+            String url = image.getUrl();
+
+            if (url.contains("pawnBlack.png")) {
+                gameBoard[i] = 'p';
+            } else if (url.contains("pawnWhite.png")) {
+                gameBoard[i] = 'P';
+            } else if (url.contains("queenBlack.png")) {
+                gameBoard[i] = 'd';
+            } else if (url.contains("queenWhite.png")) {
+                gameBoard[i] = 'D';
+            } else {
+                gameBoard[i] = 0;
+            }
+            UserSession.GAME.setBoard(gameBoard);
+        }
+    }
+
+    @FXML
+    public void wyslij() {
+        convertTo();
+        sendGame();
     }
 }
