@@ -42,7 +42,16 @@ public class FXMLMenuController extends AbstractController {
     @FXML
     private Label selectedGameName;
 
-    //wypełnianinie menu danymi z serwera
+    private MenuMethods menuMethods;
+
+    public FXMLMenuController() {
+        menuMethods = new MenuMethods();
+    }
+
+    /**
+     * wypełnianinie menu danymi z serwera
+     */
+    @FXML
     public void init(MouseEvent event) {
         //sprawdzanie czy już wypełnione
         if (initialized) {
@@ -54,12 +63,12 @@ public class FXMLMenuController extends AbstractController {
         userName.setText(UserSession.LOGIN);
 
         //pobranie i wyświtlenie listy graczy
-        List<String> userList = getUserList();
+        List<String> userList = menuMethods.getUserList(this, errorMessage);
         ObservableList<String> observableUserList = FXCollections.observableList(userList);
         playerList.setItems(observableUserList);
 
         //pobranie i wyświetlenie listy gier
-        List<String> gameListStrings = getGameList();
+        List<String> gameListStrings = menuMethods.getGameList(this, errorMessage);
         ObservableList<String> observableGameList = FXCollections.observableList(gameListStrings);
         gameList.setItems(observableGameList);
 
@@ -90,64 +99,10 @@ public class FXMLMenuController extends AbstractController {
         initialized = true;
     }
 
-    //Pobranie z serwera listy graczy
-    private List<String> getUserList() {
-        GamePackage sendPackage = new GamePackage();
-        sendPackage.setType(PackageType.GET_USER_LIST);
-        sendPackage.setUser(UserSession.LOGIN);
-
-        GamePackage getPackage = null;
-        try {
-            getPackage = sendToServer(sendPackage);
-            if (!getPackage.getResult().equals("OK")) {
-                System.out.println(getPackage.getResult());
-                errorMessage.setText("Can't download user list");
-                return Collections.EMPTY_LIST;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Set<String> stringSet = (Set<String>) getPackage.getContent();
-        return new ArrayList<>(stringSet);
-    }
-
-    //pobranie z serwera listy rozgrywanych gier
-    private List<String> getGameList() {
-        GamePackage sendPackage = new GamePackage();
-        sendPackage.setType(PackageType.GET_GAME_LIST);
-        sendPackage.setUser(UserSession.LOGIN);
-
-        GamePackage getPackage = null;
-        try {
-            getPackage = sendToServer(sendPackage);
-            if (!getPackage.getResult().equals("OK")) {
-                System.out.println(getPackage.getResult());
-                errorMessage.setText("Can't download game list");
-                return Collections.EMPTY_LIST;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        List<String> stringList = new ArrayList<>();
-        String nameGame;
-        List<GameInfo> infoList = (List<GameInfo>) getPackage.getContent();
-
-        //ustawienie formatu zapisu na ekranie
-        for (GameInfo gameInfo : infoList) {
-            String player2 = gameInfo.getPlayers()[1];
-
-            if (player2 == null) {
-                player2 = "???";
-            }
-
-            nameGame = gameInfo.getTableName().toUpperCase() + ": [" + gameInfo.getPlayers()[0] + " vs " + player2 + "]";
-            stringList.add(nameGame);
-        }
-        return stringList;
-    }
-
-    //dodanie nowego stołu do listy stołów w menu
+    /**
+     * dodanie nowego stołu do listy stołów w menu
+     */
+    @FXML
     public void createGame(ActionEvent event) throws IOException {
         //potrzebna nazwa stołu
         if (newTableName.getText().equals("")) {
