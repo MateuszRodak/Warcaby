@@ -66,7 +66,7 @@ public class FXMLLoginController extends AbstractController {
      * metoda timera wykonywana cały czas
      */
     @Override
-    protected void completeTask() {
+    protected void refresh() {
         //noop
     }
 }

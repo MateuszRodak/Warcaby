@@ -18,7 +18,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import pl.mr.checkers.client.SceneNames;
 import pl.mr.checkers.client.UserSession;
+import pl.mr.checkers.client.gui.utils.GameMethods;
 import pl.mr.checkers.model.ChatMassage;
 import pl.mr.checkers.model.Game;
 import pl.mr.checkers.model.GamePackage;
@@ -44,6 +46,14 @@ public class FXMLGameController extends AbstractController {
     private TextField chatMessage;
     @FXML
     private GridPane grid;
+    @FXML
+    private Label errorMessage;
+
+    private GameMethods gameMethods;
+
+    public FXMLGameController() {
+        gameMethods = new GameMethods();
+    }
 
     //uzupełnienie okienek
     public void init(MouseEvent event) {
@@ -148,7 +158,7 @@ public class FXMLGameController extends AbstractController {
             }
         }
 
-        Game game = getGame2();
+        Game game = gameMethods.getGame(this, errorMessage);
 
         //ustawienie pionków na start
         char[] board = game.getBoard();
@@ -173,152 +183,54 @@ public class FXMLGameController extends AbstractController {
         initialized = true;
     }
 
+    @FXML
     public void getGame() {
-        getGame2();
+        gameMethods.getGame(this, errorMessage);
+        //TODO
         initialized = false;
         init(null);
-    }
-
-    public Game getGame2() {
-        GamePackage sendPackage = new GamePackage();
-        sendPackage.setType(PackageType.GET_GAME);
-        sendPackage.setUser(UserSession.LOGIN);
-        sendPackage.setContent(UserSession.GAME_NAME);
-
-        GamePackage getPackage = null;
-        try {
-            getPackage = sendToServer(sendPackage);
-            if (!getPackage.getResult().equals("OK")) {
-                System.out.println(getPackage.getResult());
-//                errorMessage.setText("Can't download user list");
-                return null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Game game = (Game) getPackage.getContent();
-        UserSession.GAME = game;
-
-        return game;
     }
 
     //wysłanie wiadomości do czatu
+    @FXML
     public void sendMessage() {
-        GamePackage sendPackage = new GamePackage();
-        sendPackage.setType(PackageType.SEND_GAME);
-        sendPackage.setUser(UserSession.LOGIN);
+        gameMethods.sendChatMessage(this, errorMessage, chatMessage.getText());
 
-        //pobranie treści wiadomości
-        ChatMassage chat = new ChatMassage(UserSession.LOGIN, chatMessage.getText());
-        UserSession.GAME.getChatMassages().add(chat);
-        sendPackage.setContent(UserSession.GAME);
-
-        Game game = UserSession.GAME;
-
-        GamePackage getPackage;
-        //wysyłanie wiadomości na serwer
-        try {
-            getPackage = sendToServer(sendPackage);
-            if (!getPackage.getResult().equals("OK")) {
-                System.out.println(getPackage.getResult());
-//                errorMessage.setText("Nie można wysłać wiadomosci :(");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         //wyczyszczenie pola wiadomości
         chatMessage.setText("");
-        initialized = false;
-        init(null);
-    }
-
-    public void sendGame() {
-        GamePackage sendPackage = new GamePackage();
-        sendPackage.setType(PackageType.SEND_GAME);
-        sendPackage.setUser(UserSession.LOGIN);
-        sendPackage.setContent(UserSession.GAME);
-
-        GamePackage getPackage;
-        //wysyłanie wiadomości na serwer
-        try {
-            getPackage = sendToServer(sendPackage);
-            if (!getPackage.getResult().equals("OK")) {
-                System.out.println(getPackage.getResult());
-//                errorMessage.setText("Nie można wysłać wiadomosci :(");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //wyczyszczenie pola wiadomości
-        chatMessage.setText("");
+        //TODO
         initialized = false;
         init(null);
     }
 
     //powrót do menu gry
+    @FXML
     public void goBack(ActionEvent event) throws IOException {
-        Parent menu = FXMLLoader.load(getClass().getResource("/fxml/gameMenu.fxml"));
-        Scene scene = new Scene(menu);
-
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(scene);
-        window.show();
+        gameMethods.goToScene(SceneNames.MENU_SCENE, null, event);
     }
 
     //odświeżanie gry co jakiś czas
     @Override
-    protected void completeTask() {
-        System.out.println("tu cos robie gra");
+    protected void refresh() {
         if ((UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[0]) && !UserSession.GAME.isHostTurn()) || (UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[1]) && UserSession.GAME.isHostTurn())) {
             try {
-                getGame();
+                gameMethods.getGame(this, errorMessage);
+                //TODO
+                initialized = false;
+                init(null);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void convertTo() {
-        ObservableList<Node> childrens = grid.getChildren();
-
-        Pane pane;
-        ImageView imageView = null;
-
-        //pobranie z serwera pozycji pionków
-        char[] gameBoard = UserSession.GAME.getBoard();
-        char pawn;
-
-        //wyświetlenie pionków na planszy
-        for (int i = 0; i < childrens.size(); i++) {
-            pane = (Pane) childrens.get(i);
-            imageView = (ImageView) pane.getChildren().get(0);
-            Image image = imageView.getImage();
-
-            if (image == null) {
-                gameBoard[i] = 0;
-                continue;
-            }
-            String url = image.getUrl();
-
-            if (url.contains("pawnBlack.png")) {
-                gameBoard[i] = 'p';
-            } else if (url.contains("pawnWhite.png")) {
-                gameBoard[i] = 'P';
-            } else if (url.contains("queenBlack.png")) {
-                gameBoard[i] = 'd';
-            } else if (url.contains("queenWhite.png")) {
-                gameBoard[i] = 'D';
-            } else {
-                gameBoard[i] = 0;
-            }
-            UserSession.GAME.setBoard(gameBoard);
-        }
-    }
-
     @FXML
     public void wyslij() {
-        convertTo();
-        sendGame();
+        gameMethods.convertBoardToServerFormat(grid);
+        gameMethods.sendGame(this, errorMessage);
+
+        //TODO
+        initialized = false;
+        init(null);
     }
 }

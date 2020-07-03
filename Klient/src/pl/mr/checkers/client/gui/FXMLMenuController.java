@@ -125,7 +125,26 @@ public class FXMLMenuController extends AbstractController {
 
     //metoda timera wykonywana cały czas
     @Override
-    protected void completeTask() {
-        System.out.println("tu cos robie menu");
+    protected void refresh() {
+//        System.out.println("tu cos robie menu");
+        if (menuMethods == null || errorMessage == null || playerList == null) {
+            return;
+        }
+        try {
+//            menuMethods.getGameList(this, errorMessage);
+//            menuMethods.getUserList(this, errorMessage);
+
+            List<String> userList = menuMethods.getUserList(this, errorMessage);
+            ObservableList<String> observableUserList = FXCollections.observableList(userList);
+            playerList.setItems(observableUserList);
+            playerList.refresh();
+
+            //TODO
+//            initialized = false;
+//            init(null);
+//            menuMethods.goToScene(SceneNames.MENU_SCENE, null, event);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

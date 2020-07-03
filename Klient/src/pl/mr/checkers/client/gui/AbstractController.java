@@ -3,7 +3,6 @@ package pl.mr.checkers.client.gui;
 import pl.mr.checkers.client.SocketClient;
 import pl.mr.checkers.model.GamePackage;
 
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -28,9 +27,9 @@ public abstract class AbstractController extends TimerTask {
 
     @Override
     public void run() {
-        completeTask();
+        refresh();
     }
 
-    protected abstract void completeTask();
+    protected abstract void refresh();
 
 }

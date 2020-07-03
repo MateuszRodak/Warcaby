@@ -200,5 +200,6 @@
       <Button fx:id="sendMessage" layoutX="535.0" layoutY="293.0" mnemonicParsing="false" onAction="#sendMessage" text="Wyślij" />
       <Button fx:id="refresh" layoutX="460.0" layoutY="68.0" mnemonicParsing="false" onMousePressed="#getGame" text="Odśwież" />
       <Button layoutX="329.0" layoutY="193.0" mnemonicParsing="false" onMousePressed="#wyslij" text="Wyslij" />
+      <Label layoutX="279.0" layoutY="447.0" />
    </children>
 </Pane>
