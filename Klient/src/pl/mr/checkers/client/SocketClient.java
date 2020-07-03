@@ -69,7 +69,7 @@ public class SocketClient {
             socket = new Socket(UserSession.SERVER_IP,UserSession.SERVER_PORT);
             socket.setSoTimeout(2000);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return this;
     }

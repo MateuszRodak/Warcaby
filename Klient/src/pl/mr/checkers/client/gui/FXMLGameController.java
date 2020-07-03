@@ -9,7 +9,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -259,7 +258,7 @@ public class FXMLGameController extends AbstractController {
 
     //powrót do menu gry
     public void goBack(ActionEvent event) throws IOException {
-        Parent menu = FXMLLoader.load(getClass().getResource("gameMenu.fxml"));
+        Parent menu = FXMLLoader.load(getClass().getResource("/fxml/gameMenu.fxml"));
         Scene scene = new Scene(menu);
 
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();

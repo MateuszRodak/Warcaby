@@ -21,5 +21,4 @@ public class UserSession {
     public static Image QUENN_BLACK_CLICKED = new Image("/queenBlackClicked.png");
     public static Image QUENN_WHITE = new Image("/queenWhite.png");
     public static Image QUENN_WHITE_CLICKED = new Image("/queenWhiteClicked.png");
-//    public static Image PAWN_BACKGROUND = new Image("/background.png");
 }

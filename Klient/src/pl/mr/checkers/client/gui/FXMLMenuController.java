@@ -6,21 +6,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 import pl.mr.checkers.client.UserSession;
-import pl.mr.checkers.model.Game;
-import pl.mr.checkers.model.GameInfo;
-import pl.mr.checkers.model.GamePackage;
-import pl.mr.checkers.model.PackageType;
+import pl.mr.checkers.client.gui.utils.MenuMethods;
+import pl.mr.checkers.client.SceneNames;
 
 import java.io.IOException;
 import java.util.*;
@@ -42,7 +34,7 @@ public class FXMLMenuController extends AbstractController {
     @FXML
     private Label selectedGameName;
 
-    private MenuMethods menuMethods;
+    private final MenuMethods menuMethods;
 
     public FXMLMenuController() {
         menuMethods = new MenuMethods();
@@ -109,82 +101,27 @@ public class FXMLMenuController extends AbstractController {
             errorMessage.setText("Podaj nazwe");
             return;
         }
+
         String tableName = newTableName.getText().toUpperCase();
-        GamePackage sendPackage = new GamePackage();
-        sendPackage.setType(PackageType.CREATE_NEW_GAME);
-        sendPackage.setUser(UserSession.LOGIN);
-        sendPackage.setContent(tableName);
-
-        GamePackage getPackage;
-
-        //próba wyciągnięcia zgody od serwera na stworzenie stołu
-        try {
-            getPackage = sendToServer(sendPackage);
-            if (!getPackage.getResult().equals("OK")) {
-                System.out.println(getPackage.getResult());
-                errorMessage.setText("Can't create new game");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-
-        //daj znać swojej aplikacji jaką nazwę wybrałeś
-        UserSession.GAME = (Game) getPackage.getContent();
-        UserSession.GAME_NAME = tableName;
+        menuMethods.createNewGame(this,errorMessage,tableName);
 
         //dołącz do utworzonej swojej gry
-        play(event);
+        menuMethods.goToScene(SceneNames.GAME_SCENE, null, event);
     }
 
-    //dołączenie do wybranej gry
+    /**
+     * dołączenie do stołu
+     */
+    @FXML
     public void join(ActionEvent event) throws IOException {
-        String gameNameText = selectedGameName.getText();
-        GamePackage sendPackage = new GamePackage();
-        sendPackage.setType(PackageType.ACCESS_TO_GAME);
-        sendPackage.setUser(UserSession.LOGIN);
-        sendPackage.setContent(gameNameText);
+        String tableName = selectedGameName.getText();
 
-        GamePackage getPackage;
-
-        //pozyskanie zgody serwera na dołączenie
-        try {
-            getPackage = sendToServer(sendPackage);
-            if (!getPackage.getResult().equals("OK")) {
-                System.out.println(getPackage.getResult());
-                errorMessage.setText("Can't join to stupid game");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-
-        //zapisanie Twojego wyboru
-        UserSession.GAME = (Game) getPackage.getContent();
-        UserSession.GAME_NAME = gameNameText;
+        //dołączanie do stołu
+        menuMethods.joinToGame(this,errorMessage,tableName);
 
         //przełączenie okna na okno z grą
-        play(event);
+        menuMethods.goToScene(SceneNames.GAME_SCENE, null, event);
     }
-
-    //przejście do panelu gry
-    private void play(ActionEvent event) throws IOException {
-        Parent menu = FXMLLoader.load(getClass().getResource("game.fxml"));
-        Scene scene = new Scene(menu);
-
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(scene);
-        window.show();
-    }
-
-//    //Wpisz losową nazwę
-//    public void random() {
-//        Random rand = new Random();
-//        int n = rand.nextInt(999);
-//        if (newTableName.getText().isEmpty()) {
-//            newTableName.setText(String.valueOf(n));
-//        }
-//    }
 
     //metoda timera wykonywana cały czas
     @Override
