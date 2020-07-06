@@ -22,16 +22,6 @@ public class SocketClient {
 
     }
 
-    public void sendMessage(String message) {
-        ObjectOutputStream outputStream = null;
-        try {
-            outputStream = new ObjectOutputStream(socket.getOutputStream());
-            outputStream.writeObject(message);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void sendPackage(GamePackage gamePackage) {
         ObjectOutputStream outputStream = null;
         try {
@@ -42,16 +32,6 @@ public class SocketClient {
         }
     }
 
-    public String readMessage() {
-        ObjectInputStream inputStream = null;
-        try {
-            inputStream = new ObjectInputStream(socket.getInputStream());
-            return (String) inputStream.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public GamePackage readPackage() {
         ObjectInputStream inputStream = null;

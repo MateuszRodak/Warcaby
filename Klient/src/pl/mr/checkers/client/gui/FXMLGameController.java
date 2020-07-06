@@ -1,5 +1,6 @@
 package pl.mr.checkers.client.gui;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,7 +34,6 @@ import java.util.List;
 
 public class FXMLGameController extends AbstractController {
 
-    private boolean initialized;
     @FXML
     private Label user1;
     @FXML
@@ -57,10 +57,6 @@ public class FXMLGameController extends AbstractController {
 
     //uzupełnienie okienek
     public void init(MouseEvent event) {
-        //sprawdzanie czy to już wypełnione
-        if (initialized) {
-            return;
-        }
 
         //uzupełnienie nazwy gry
         try {
@@ -71,16 +67,14 @@ public class FXMLGameController extends AbstractController {
         //ponumerowanie wszystkich kratek
         ObservableList<Node> childrens = grid.getChildren();
 
-        System.out.println("childrens=" + childrens.size());
 
         Pane pane;
         ImageView imageView = null;
 
         //pobranie z serwera pozycji pionków
+        gameMethods.getGame(this, errorMessage);
         char[] gameBoard = UserSession.GAME.getBoard();
         char pawn;
-        System.out.println("GAMEboard=" + gameBoard.length);
-        System.out.println("GAMEboard=" + Arrays.toString(gameBoard));
 
         //wyświetlenie pionków na planszy
         for (int i = 0; i < gameBoard.length; i++) {
@@ -96,7 +90,6 @@ public class FXMLGameController extends AbstractController {
             pane.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-//                    System.out.println("pole " + position);
                     ObservableList<Node> children = finalPane.getChildren();
                     if (children.isEmpty()) {
                         return;
@@ -135,7 +128,7 @@ public class FXMLGameController extends AbstractController {
                         Pane oldPane = (Pane) childrens.get(UserSession.FIELD_POSITION);
                         ImageView oldPawn = (ImageView) oldPane.getChildren().get(0);
                         UserSession.PAWN_CLICKED = false;
-                        oldPawn.setImage(null);
+                        oldPawn.setImage(UserSession.BACKGROUND);
                         wyslij();
                     }
 
@@ -155,40 +148,20 @@ public class FXMLGameController extends AbstractController {
                 imageView.setImage(UserSession.QUENN_BLACK);
             } else if (pawn == 'D') {
                 imageView.setImage(UserSession.QUENN_WHITE);
+//            } else if (imageView != null){
+//                imageView.setImage(UserSession.BACKGROUND);
             }
         }
 
-        Game game = gameMethods.getGame(this, errorMessage);
+//        Game game = gameMethods.getGame(this, errorMessage);
 
-        //ustawienie pionków na start
-        char[] board = game.getBoard();
+//        refresh();
 
         //pobranie graczy grających
-        String[] players = game.getPlayers();
+        String[] players = UserSession.GAME.getPlayers();
         user1.setText(players[0]);
         user2.setText(players[1]);
 
-        //lista wiadomosci na chacie
-        List<ChatMassage> chatMassages = game.getChatMassages();
-        System.out.println("dziala" + chatMassages.size());
-
-        ///zaslepka
-//        ChatMassage chatMassage = new ChatMassage(UserSession.LOGIN, "ble ble");
-//        chatMassages.add(chatMassage);
-
-        ObservableList<ChatMassage> observableGameList = FXCollections.observableList(chatMassages);
-        chat.setItems(observableGameList);
-        chat.scrollTo(chatMassages.size());
-
-        initialized = true;
-    }
-
-    @FXML
-    public void getGame() {
-        gameMethods.getGame(this, errorMessage);
-        //TODO
-        initialized = false;
-        init(null);
     }
 
     //wysłanie wiadomości do czatu
@@ -199,8 +172,7 @@ public class FXMLGameController extends AbstractController {
         //wyczyszczenie pola wiadomości
         chatMessage.setText("");
         //TODO
-        initialized = false;
-        init(null);
+//        init(null);
     }
 
     //powrót do menu gry
@@ -212,25 +184,60 @@ public class FXMLGameController extends AbstractController {
     //odświeżanie gry co jakiś czas
     @Override
     protected void refresh() {
-        if ((UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[0]) && !UserSession.GAME.isHostTurn()) || (UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[1]) && UserSession.GAME.isHostTurn())) {
+        if (UserSession.CURRENT_SCENE != SceneNames.GAME_SCENE || errorMessage == null) {
+            return;
+        }
+
+        boolean notMyMove = (UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[0]) && !UserSession.GAME.isHostTurn()) || (UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[1]) && UserSession.GAME.isHostTurn());
+
+        if (notMyMove) {
+//        if (true) {
+            System.out.println("moj ruch dziwny if dziala");
             try {
                 gameMethods.getGame(this, errorMessage);
-                //TODO
-                initialized = false;
-                init(null);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        //wyswietlanie pionków na planszy
+                        gameMethods.convertServerFormatToBoard(grid);
+
+
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+
+
+        //lista wiadomosci na chacie
+        List<ChatMassage> chatMassages = UserSession.GAME.getChatMassages();
+
+        ObservableList<ChatMassage> observableGameList = FXCollections.observableList(chatMassages);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                if (notMyMove) {
+                    user1.setUnderline(false);
+                    user1.setStyle("-fx-text-fill: black");
+                    user2.setUnderline(true);
+                    user2.setStyle("-fx-text-fill: blue");
+                } else {
+                    user1.setUnderline(true);
+                    user1.setStyle("-fx-text-fill: blue");
+                    user2.setUnderline(false);
+                    user2.setStyle("-fx-text-fill: black");
+                }
+
+                chat.setItems(observableGameList);
+                chat.scrollTo(chatMassages.size());
+            }
+        });
     }
 
     @FXML
     public void wyslij() {
         gameMethods.convertBoardToServerFormat(grid);
         gameMethods.sendGame(this, errorMessage);
-
-        //TODO
-        initialized = false;
-        init(null);
     }
 }

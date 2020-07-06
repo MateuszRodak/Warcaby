@@ -41,19 +41,21 @@ public class GameMethods extends Methods{
         }
     }
 
-    public Game getGame(AbstractController controller, Label errorMessage) {
+    public boolean getGame(AbstractController controller, Label errorMessage) {
         Pair<String, Object> result = sendPackage(controller, PackageType.GET_GAME, UserSession.GAME_NAME);
 
         if (result.getKey().equals("RIP")) {
             errorMessage.setText("Server error connection");
+            return true;
         } else if (!result.getKey().equals("OK")) {
             errorMessage.setText("Can't get game from server");
+            return true;
         }
 
         Game game = (Game) result.getValue();
         UserSession.GAME = game;
 
-        return game;
+        return false;
     }
 
     public void convertBoardToServerFormat(GridPane grid) {
@@ -65,10 +67,9 @@ public class GameMethods extends Methods{
         //pobranie z serwera pozycji pionków
         char[] gameBoard = UserSession.GAME.getBoard();
 
-        //wyświetlenie pionków na planszy
+        //czytanie pionków z planszy
         for (int i = 0; i < childrens.size(); i++) {
             pane = (Pane) childrens.get(i);
-//            System.out.println("!!!!!!"+pane.getChildren());
             if (pane.getChildren().isEmpty()) {
                 gameBoard[i] = 0;
                 continue;
@@ -94,6 +95,39 @@ public class GameMethods extends Methods{
                 gameBoard[i] = 0;
             }
             UserSession.GAME.setBoard(gameBoard);
+        }
+    }
+    public void convertServerFormatToBoard(GridPane grid){
+        //pobranie z serwera pozycji pionków
+        ObservableList<Node> childrens = grid.getChildren();
+
+        Pane pane;
+        ImageView imageView = null;
+        char[] gameBoard = UserSession.GAME.getBoard();
+        char pawn;
+
+        //wyświetlenie pionków na planszy
+        for (int i = 0; i < gameBoard.length; i++) {
+//                            int position = i;
+            pawn = gameBoard[i];
+            pane = (Pane) childrens.get(i);
+//                            Pane finalPane = pane;
+
+            if (pawn > 0) {
+                imageView = (ImageView) pane.getChildren().get(0);
+            }
+
+            if (pawn == 'p') {
+                imageView.setImage(UserSession.PAWN_BLACK);
+            } else if (pawn == 'P') {
+                imageView.setImage(UserSession.PAWN_WHITE);
+            } else if (pawn == 'd') {
+                imageView.setImage(UserSession.QUENN_BLACK);
+            } else if (pawn == 'D') {
+                imageView.setImage(UserSession.QUENN_WHITE);
+            } else if (imageView != null){
+                imageView.setImage(UserSession.BACKGROUND);
+            }
         }
     }
 }

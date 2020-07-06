@@ -1,9 +1,13 @@
 package pl.mr.checkers.client;
 
+import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import pl.mr.checkers.model.Game;
 
 public class UserSession {
+    public static SceneNames CURRENT_SCENE;
+    public static ObservableList<String> CURRENT_PLAYER_LIST;
+    public static ObservableList<String> CURRENT_TABLE_LIST;
     public static String SERVER_IP;
     public static int SERVER_PORT;
 
@@ -21,4 +25,5 @@ public class UserSession {
     public static Image QUENN_BLACK_CLICKED = new Image("/queenBlackClicked.png");
     public static Image QUENN_WHITE = new Image("/queenWhite.png");
     public static Image QUENN_WHITE_CLICKED = new Image("/queenWhiteClicked.png");
+    public static Image BACKGROUND = new Image("/background.png");
 }

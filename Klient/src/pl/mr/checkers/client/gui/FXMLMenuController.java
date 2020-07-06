@@ -1,25 +1,21 @@
 package pl.mr.checkers.client.gui;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import pl.mr.checkers.client.SceneNames;
 import pl.mr.checkers.client.UserSession;
 import pl.mr.checkers.client.gui.utils.MenuMethods;
-import pl.mr.checkers.client.SceneNames;
 
 import java.io.IOException;
-import java.util.*;
 
 public class FXMLMenuController extends AbstractController {
-
-    private boolean initialized;
 
     @FXML
     private Label userName;
@@ -45,30 +41,20 @@ public class FXMLMenuController extends AbstractController {
      */
     @FXML
     public void init(MouseEvent event) {
-        //sprawdzanie czy już wypełnione
-        if (initialized) {
-            return;
-        }
-        errorMessage.setText("");
 
         //pobranie z lokalnego pliku nazwy użytkownika podanego przy logowaniu
         userName.setText(UserSession.LOGIN);
 
-        //pobranie i wyświtlenie listy graczy
-        List<String> userList = menuMethods.getUserList(this, errorMessage);
-        ObservableList<String> observableUserList = FXCollections.observableList(userList);
-        playerList.setItems(observableUserList);
-
-        //pobranie i wyświetlenie listy gier
-        List<String> gameListStrings = menuMethods.getGameList(this, errorMessage);
-        ObservableList<String> observableGameList = FXCollections.observableList(gameListStrings);
-        gameList.setItems(observableGameList);
 
         //po kliknieciu na rozgrywaną gre wyświetla nazwę poniżej w sekcji join
         gameList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 //WAŻNE nazwa gry ma postać: naszanazwagry: [gracz_pierwszy vs gracz_drugi]
+
+                if (newValue == null) {
+                    return;
+                }
 
                 //sprawdzenie czy przy stole jest wolne miejsce
                 int pending = newValue.indexOf("???");
@@ -88,7 +74,8 @@ public class FXMLMenuController extends AbstractController {
                 selectedGameName.setText(substring);
             }
         });
-        initialized = true;
+
+        refresh();
     }
 
     /**
@@ -96,6 +83,7 @@ public class FXMLMenuController extends AbstractController {
      */
     @FXML
     public void createGame(ActionEvent event) throws IOException {
+        errorMessage.setText("");
         //potrzebna nazwa stołu
         if (newTableName.getText().equals("")) {
             errorMessage.setText("Podaj nazwe");
@@ -103,7 +91,11 @@ public class FXMLMenuController extends AbstractController {
         }
 
         String tableName = newTableName.getText().toUpperCase();
-        menuMethods.createNewGame(this,errorMessage,tableName);
+        boolean isError = menuMethods.createNewGame(this, errorMessage, tableName);
+
+        if (isError) {
+            return;
+        }
 
         //dołącz do utworzonej swojej gry
         menuMethods.goToScene(SceneNames.GAME_SCENE, null, event);
@@ -114,10 +106,15 @@ public class FXMLMenuController extends AbstractController {
      */
     @FXML
     public void join(ActionEvent event) throws IOException {
+        errorMessage.setText("");
         String tableName = selectedGameName.getText();
 
         //dołączanie do stołu
-        menuMethods.joinToGame(this,errorMessage,tableName);
+        boolean isError = menuMethods.joinToGame(this, errorMessage, tableName);
+
+        if (isError) {
+            return;
+        }
 
         //przełączenie okna na okno z grą
         menuMethods.goToScene(SceneNames.GAME_SCENE, null, event);
@@ -126,23 +123,25 @@ public class FXMLMenuController extends AbstractController {
     //metoda timera wykonywana cały czas
     @Override
     protected void refresh() {
-//        System.out.println("tu cos robie menu");
-        if (menuMethods == null || errorMessage == null || playerList == null) {
+
+        if (UserSession.CURRENT_SCENE != SceneNames.MENU_SCENE || menuMethods == null || errorMessage == null || playerList == null) {
             return;
         }
         try {
-//            menuMethods.getGameList(this, errorMessage);
-//            menuMethods.getUserList(this, errorMessage);
+            menuMethods.getGameList(this, errorMessage);
+            menuMethods.getUserList(this, errorMessage);
 
-            List<String> userList = menuMethods.getUserList(this, errorMessage);
-            ObservableList<String> observableUserList = FXCollections.observableList(userList);
-            playerList.setItems(observableUserList);
-            playerList.refresh();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    playerList.setItems(UserSession.CURRENT_PLAYER_LIST);
+                    playerList.refresh();
 
-            //TODO
-//            initialized = false;
-//            init(null);
-//            menuMethods.goToScene(SceneNames.MENU_SCENE, null, event);
+                    gameList.setItems(UserSession.CURRENT_TABLE_LIST);
+                    gameList.refresh();
+                }
+            });
+
         } catch (Exception e) {
             e.printStackTrace();
         }
