@@ -11,6 +11,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage window) throws Exception {
         Methods methods = new Methods();
+        UserSession.CURRENT_SCENE =SceneNames.LOGIN_SCENE;
         methods.goToScene(SceneNames.LOGIN_SCENE, window, null);
     }
 

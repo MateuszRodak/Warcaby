@@ -108,26 +108,24 @@ public class GameMethods extends Methods{
 
         //wyświetlenie pionków na planszy
         for (int i = 0; i < gameBoard.length; i++) {
-//                            int position = i;
             pawn = gameBoard[i];
             pane = (Pane) childrens.get(i);
-//                            Pane finalPane = pane;
 
-            if (pawn > 0) {
-                imageView = (ImageView) pane.getChildren().get(0);
-            }
+                if(!pane.getChildren().isEmpty()){
+                    imageView = (ImageView) pane.getChildren().get(0);
 
-            if (pawn == 'p') {
-                imageView.setImage(UserSession.PAWN_BLACK);
-            } else if (pawn == 'P') {
-                imageView.setImage(UserSession.PAWN_WHITE);
-            } else if (pawn == 'd') {
-                imageView.setImage(UserSession.QUENN_BLACK);
-            } else if (pawn == 'D') {
-                imageView.setImage(UserSession.QUENN_WHITE);
-            } else if (imageView != null){
-                imageView.setImage(UserSession.BACKGROUND);
-            }
+                    if (pawn == 'p') {
+                        imageView.setImage(UserSession.PAWN_BLACK);
+                    } else if (pawn == 'P') {
+                        imageView.setImage(UserSession.PAWN_WHITE);
+                    } else if (pawn == 'd') {
+                        imageView.setImage(UserSession.QUENN_BLACK);
+                    } else if (pawn == 'D') {
+                        imageView.setImage(UserSession.QUENN_WHITE);
+                    } else {
+                        imageView.setImage(UserSession.BACKGROUND);
+                    }
+                }
         }
     }
 }

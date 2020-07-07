@@ -2,14 +2,17 @@ package pl.mr.checkers.client;
 
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import pl.mr.checkers.model.Game;
 
 public class UserSession {
     public static SceneNames CURRENT_SCENE;
-    public static ObservableList<String> CURRENT_PLAYER_LIST;
-    public static ObservableList<String> CURRENT_TABLE_LIST;
     public static String SERVER_IP;
     public static int SERVER_PORT;
+
+    public static ObservableList<String> CURRENT_PLAYER_LIST;
+    public static ObservableList<String> CURRENT_TABLE_LIST;
+//    public static Stage CURRENT_WINDOW;
 
     public static String LOGIN;
     public static Game GAME;

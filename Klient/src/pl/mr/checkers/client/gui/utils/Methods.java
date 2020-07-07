@@ -62,7 +62,8 @@ public class Methods {
             throw new IOException();
         }
 
-        UserSession.CURRENT_SCENE = sceneName;
+//        UserSession.CURRENT_WINDOW = window;
+//        UserSession.CURRENT_SCENE = sceneName;
         window.setScene(scene);
         window.show();
     }

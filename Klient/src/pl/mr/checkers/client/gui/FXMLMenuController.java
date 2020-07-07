@@ -14,6 +14,8 @@ import pl.mr.checkers.client.UserSession;
 import pl.mr.checkers.client.gui.utils.MenuMethods;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class FXMLMenuController extends AbstractController {
 
@@ -37,11 +39,81 @@ public class FXMLMenuController extends AbstractController {
     }
 
     /**
-     * wypełnianinie menu danymi z serwera
+     * dodanie nowego stołu do listy stołów w menu
      */
     @FXML
-    public void init(MouseEvent event) {
+    public void createGame(ActionEvent event) throws IOException {
+        errorMessage.setText("");
+        //potrzebna nazwa stołu
+        if (newTableName.getText().equals("")) {
+            errorMessage.setText("Podaj nazwe");
+            return;
+        }
 
+        String tableName = newTableName.getText().toUpperCase();
+        boolean isError = menuMethods.createNewGame(this, errorMessage, tableName);
+
+        if (isError) {
+            return;
+        }
+
+        //dołącz do utworzonej swojej gry
+        UserSession.CURRENT_SCENE =SceneNames.GAME_SCENE;
+        menuMethods.goToScene(SceneNames.GAME_SCENE, null, event);
+    }
+
+    /**
+     * dołączenie do stołu
+     */
+    @FXML
+    public void join(ActionEvent event) throws IOException {
+        errorMessage.setText("");
+        String tableName = selectedGameName.getText();
+
+        //dołączanie do stołu
+        boolean isError = menuMethods.joinToGame(this, errorMessage, tableName);
+
+        if (isError) {
+            return;
+        }
+
+        //przełączenie okna na okno z grą
+        UserSession.CURRENT_SCENE =SceneNames.GAME_SCENE;
+        menuMethods.goToScene(SceneNames.GAME_SCENE, null, event);
+    }
+
+    //metoda timera wykonywana cały czas
+    @Override
+    protected void refresh() {
+
+        if (UserSession.CURRENT_SCENE != SceneNames.MENU_SCENE || menuMethods == null || errorMessage == null || playerList == null) {
+//        if (UserSession.CURRENT_SCENE != SceneNames.MENU_SCENE) {
+            return;
+        }
+        try {
+            menuMethods.getGameList(this, errorMessage);
+            menuMethods.getUserList(this, errorMessage);
+
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    playerList.setItems(UserSession.CURRENT_PLAYER_LIST);
+                    playerList.refresh();
+
+                    gameList.setItems(UserSession.CURRENT_TABLE_LIST);
+                    gameList.refresh();
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         //pobranie z lokalnego pliku nazwy użytkownika podanego przy logowaniu
         userName.setText(UserSession.LOGIN);
 
@@ -76,74 +148,5 @@ public class FXMLMenuController extends AbstractController {
         });
 
         refresh();
-    }
-
-    /**
-     * dodanie nowego stołu do listy stołów w menu
-     */
-    @FXML
-    public void createGame(ActionEvent event) throws IOException {
-        errorMessage.setText("");
-        //potrzebna nazwa stołu
-        if (newTableName.getText().equals("")) {
-            errorMessage.setText("Podaj nazwe");
-            return;
-        }
-
-        String tableName = newTableName.getText().toUpperCase();
-        boolean isError = menuMethods.createNewGame(this, errorMessage, tableName);
-
-        if (isError) {
-            return;
-        }
-
-        //dołącz do utworzonej swojej gry
-        menuMethods.goToScene(SceneNames.GAME_SCENE, null, event);
-    }
-
-    /**
-     * dołączenie do stołu
-     */
-    @FXML
-    public void join(ActionEvent event) throws IOException {
-        errorMessage.setText("");
-        String tableName = selectedGameName.getText();
-
-        //dołączanie do stołu
-        boolean isError = menuMethods.joinToGame(this, errorMessage, tableName);
-
-        if (isError) {
-            return;
-        }
-
-        //przełączenie okna na okno z grą
-        menuMethods.goToScene(SceneNames.GAME_SCENE, null, event);
-    }
-
-    //metoda timera wykonywana cały czas
-    @Override
-    protected void refresh() {
-
-        if (UserSession.CURRENT_SCENE != SceneNames.MENU_SCENE || menuMethods == null || errorMessage == null || playerList == null) {
-            return;
-        }
-        try {
-            menuMethods.getGameList(this, errorMessage);
-            menuMethods.getUserList(this, errorMessage);
-
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    playerList.setItems(UserSession.CURRENT_PLAYER_LIST);
-                    playerList.refresh();
-
-                    gameList.setItems(UserSession.CURRENT_TABLE_LIST);
-                    gameList.refresh();
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

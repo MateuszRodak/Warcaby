@@ -1,12 +1,13 @@
 package pl.mr.checkers.client.gui;
 
+import javafx.fxml.Initializable;
 import pl.mr.checkers.client.SocketClient;
 import pl.mr.checkers.model.GamePackage;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public abstract class AbstractController extends TimerTask {
+public abstract class AbstractController extends TimerTask implements Initializable {
 
     public AbstractController() {
         Timer timer = new Timer(true);

@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseMoved="#init" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.mr.checkers.client.gui.FXMLGameController">
+<Pane fx:id="hostPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.mr.checkers.client.gui.FXMLGameController">
    <children>
       <Pane layoutX="19.0" layoutY="38.0" prefHeight="310.0" prefWidth="310.0" style="-fx-background-color: saddlebrown;" />
       <GridPane fx:id="grid" layoutX="24.0" layoutY="43.0" maxHeight="300.0" maxWidth="300.0" minHeight="300.0" minWidth="300.0" prefHeight="300.0" prefWidth="300.0">
@@ -202,5 +202,6 @@
       <Button layoutX="329.0" layoutY="193.0" mnemonicParsing="false" onMousePressed="#wyslij" text="Wyslij" />
       <Label layoutX="279.0" layoutY="447.0" />
       <Label fx:id="errorMessage" layoutX="315.0" layoutY="447.0" text="error" />
+      <Label fx:id="playerName" layoutX="460.0" layoutY="30.0" text="nazwa gracza" />
    </children>
 </Pane>

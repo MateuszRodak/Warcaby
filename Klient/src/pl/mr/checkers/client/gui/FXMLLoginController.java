@@ -9,6 +9,8 @@ import pl.mr.checkers.client.gui.utils.LoginMethods;
 import pl.mr.checkers.client.SceneNames;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 
 public class FXMLLoginController extends AbstractController {
@@ -47,6 +49,7 @@ public class FXMLLoginController extends AbstractController {
         }
 
         // wyświetl menu po poprawnym zalogowaniu
+        UserSession.CURRENT_SCENE =SceneNames.MENU_SCENE;
         loginMethods.goToScene(SceneNames.MENU_SCENE, null, event);
     }
 
@@ -67,6 +70,11 @@ public class FXMLLoginController extends AbstractController {
      */
     @Override
     protected void refresh() {
+        //noop
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         //noop
     }
 }
