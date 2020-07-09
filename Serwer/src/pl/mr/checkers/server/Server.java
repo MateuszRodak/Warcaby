@@ -312,7 +312,7 @@ public class Server extends TimerTask
         completeTask();
         counterClener++;
         //System.out.println("Timer task finished at:"+new Date());
-        System.out.println("["+counterClener+"] Usunieto tych baranow co sie nie logujom!"+ " Date: " + new Date());
+        System.out.println("["+counterClener+"] Usunieto nieaktywnych użytkowników oraz nieaktywne gry"+ " Date: " + new Date());
         long timestamp = new Date().getTime();
 
 
