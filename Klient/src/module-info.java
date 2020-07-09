@@ -3,5 +3,5 @@ module Klient {
     requires javafx.fxml;
 
     opens pl.mr.checkers.client.gui to javafx.fxml;
-    exports pl.mr.checkers.client.gui;
+    exports pl.mr.checkers.client;
 }

@@ -1,13 +1,22 @@
 package pl.mr.checkers.client;
 
+import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import pl.mr.checkers.model.Game;
 
 public class UserSession {
+    public static SceneNames CURRENT_SCENE;
+    public static String SERVER_IP;
+    public static int SERVER_PORT;
+
+    public static ObservableList<String> CURRENT_PLAYER_LIST;
+    public static ObservableList<String> CURRENT_TABLE_LIST;
+//    public static Stage CURRENT_WINDOW;
+
     public static String LOGIN;
     public static Game GAME;
     public static String GAME_NAME;
-//    public static int PAWN_POSITION;
     public static int FIELD_POSITION;
     public static boolean PAWN_CLICKED;
 
@@ -19,5 +28,5 @@ public class UserSession {
     public static Image QUENN_BLACK_CLICKED = new Image("/queenBlackClicked.png");
     public static Image QUENN_WHITE = new Image("/queenWhite.png");
     public static Image QUENN_WHITE_CLICKED = new Image("/queenWhiteClicked.png");
-//    public static Image PAWN_BACKGROUND = new Image("/background.png");
+    public static Image BACKGROUND = new Image("/background.png");
 }
