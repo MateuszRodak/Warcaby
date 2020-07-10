@@ -18,6 +18,7 @@ public class Server extends TimerTask
 {
     private static ServerSocket SERVER_SOCKET;
     private static int PORT = 9876;
+
     private Map<String, Game> gameTables = new HashMap<>();
     private Map<String, Date> gameTimeTable = new HashMap<>();
     private Map<String, Date> userTables = new HashMap<>();
@@ -26,6 +27,10 @@ public class Server extends TimerTask
     //TWORZENIE SERWERA ORAZ PROWADZENIE NASŁUCHU NA SOCKECIE
     public static void main(String args[]) throws IOException, ClassNotFoundException
     {
+        if(args.length == 1){
+        PORT = Integer.parseInt(args[0]);
+        }
+
         Server server = new Server();
         SERVER_SOCKET = new ServerSocket(PORT);
         System.out.println("Waiting for the client request");
@@ -216,7 +221,6 @@ public class Server extends TimerTask
             ret.setResult("ERROR37: Game not exists");
             return ret;
         }
-
 
         //Sprawdzić czy gra jest w oczekiwaniu na gracza
 //        if (!game.isPending())
