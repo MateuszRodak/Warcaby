@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.ClassNotFoundException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
@@ -33,6 +34,8 @@ public class Server extends TimerTask
 
         Server server = new Server();
         SERVER_SOCKET = new ServerSocket(PORT);
+
+        System.out.println("Server is now Online! IP: " + InetAddress.getLocalHost().getHostAddress() + " Port: " + SERVER_SOCKET.getLocalPort());
         System.out.println("Waiting for the client request");
 
         //włączenie timera
@@ -223,13 +226,6 @@ public class Server extends TimerTask
             ret.setResult("ERROR37: Game not exists");
             return ret;
         }
-
-        //Sprawdzić czy gra jest w oczekiwaniu na gracza
-//        if (!game.isPending())
-        //     {
-        //         ret.setResult("ERROR3: Game is full");
-        //         return ret;
-        //    }
 
         //Dołącz do gry
         String[] players = game.getPlayers();
