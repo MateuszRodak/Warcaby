@@ -111,6 +111,8 @@ public class Server extends TimerTask
                 break;
         }
 
+        checkLogin(gamePackage.getUser());
+
         return (GamePackage) response;
     }
 
@@ -263,46 +265,27 @@ public class Server extends TimerTask
     private GamePackage sendGame(Game gameClient)
     {
         GamePackage ret = new GamePackage();
-      //  String[] players;
-      //  String playerMove;
 
         if (gameClient.getName() == null)
         {
             ret.setResult("ERROR5: Game Name is empty");
         }
-        //else
-       // {
-          //  Game gameServer = gameTables.get(gameClient.getName());
 
-           // players = gameServer.getPlayers();
+        Game gameServer = gameTables.get(gameClient.getName());
 
-           // if(gameServer.isHostTurn())
-        //    {
-        //        playerMove = players[0];
-       //    }
-        //    else
-         //   {
-         //       playerMove = players[1];
-         //   }
+        //Sprawdza czy plansze sa takie same
+        if(!Arrays.equals(gameClient.getBoard(), gameServer.getBoard()))
+        {
+            boolean hostTurn = gameServer.isHostTurn();
+            gameClient.setHostTurn(!hostTurn);
+        }
 
-           // if(playerMove == user)
-          //  {
-                //Podmienienie game
-                gameTables.put(gameClient.getName(), gameClient);
-                Game gameServer = gameTables.get(gameClient.getName());
+        //Podmienienie game
+        gameTables.put(gameClient.getName(), gameClient);
 
-                boolean hostTurn = gameServer.isHostTurn();
-                gameServer.setHostTurn(!hostTurn);
 
-                System.out.println("Host Turn? : " + gameServer.isHostTurn());
-                ret.setResult("OK");
-          //  }
-          //  else
-          //  {
-         //       System.out.println("Nie twój ruch!");
-          //      ret.setResult("Nie twój ruch!");
-          //  }
-       // }
+        System.out.println("Host Turn? : " + gameServer.isHostTurn());
+        ret.setResult("OK");
 
         return ret;
     }
