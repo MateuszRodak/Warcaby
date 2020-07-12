@@ -56,7 +56,7 @@ public class FXMLGameController extends AbstractController {
 
         //ponumerowanie wszystkich kratek
         ObservableList<Node> childrens = grid.getChildren();
-        
+
         Pane pane;
 
         for (int i = 0; i < 64; i++) {
@@ -75,13 +75,11 @@ public class FXMLGameController extends AbstractController {
 
                     ImageView imageView = (ImageView) children.get(0);
 
+                    UserSession.CURRENT_POSITION = position;
                     String url = imageView.getImage().getUrl();
                     String substring = url.substring(url.lastIndexOf('/') + 1);
 
                     if (!substring.equals("background.png")) {
-//                    if (imageView.getImage() != null) {
-//                        String url = imageView.getImage().getUrl();
-//                        String substring = url.substring(url.lastIndexOf('/') + 1);
                         if (UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[0]) && UserSession.GAME.isHostTurn()) {
                             if (substring.equals("pawnBlack.png") && !UserSession.PAWN_CLICKED) {
                                 imageView.setImage(UserSession.PAWN_BLACK_CLICKED);
@@ -99,7 +97,8 @@ public class FXMLGameController extends AbstractController {
                                 UserSession.PAWN_CLICKED = false;
                             }
                         }
-                    } else if (UserSession.PAWN_CLICKED) {
+                    } else if (UserSession.PAWN_CLICKED && canMakeMove()) {
+//                        boolean dupa = canMakeMove();
                         //ustawienie nowego
                         if (UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[0])) {
                             imageView.setImage(UserSession.PAWN_BLACK);
@@ -108,6 +107,37 @@ public class FXMLGameController extends AbstractController {
                         }
                         //usuniecie starego
                         Pane oldPane = (Pane) childrens.get(UserSession.FIELD_POSITION);
+
+                        if (UserSession.CURRENT_POSITION == UserSession.FIELD_POSITION + 14) {
+                            if (UserSession.GAME.getBoard()[UserSession.FIELD_POSITION + 7] == 'P') {
+                                Pane oldPane2 = (Pane) childrens.get(UserSession.FIELD_POSITION + 7);
+                                ImageView oldPawn2 = (ImageView) oldPane2.getChildren().get(0);
+                                UserSession.PAWN_CLICKED = false;
+                                oldPawn2.setImage(UserSession.BACKGROUND);
+                            }
+                        } else if (UserSession.CURRENT_POSITION == UserSession.FIELD_POSITION + 18) {
+                            if (UserSession.GAME.getBoard()[UserSession.FIELD_POSITION + 9] == 'P') {
+                                Pane oldPane3 = (Pane) childrens.get(UserSession.FIELD_POSITION + 9);
+                                ImageView oldPawn3 = (ImageView) oldPane3.getChildren().get(0);
+                                UserSession.PAWN_CLICKED = false;
+                                oldPawn3.setImage(UserSession.BACKGROUND);
+                            }
+                        }
+                        if (UserSession.CURRENT_POSITION == UserSession.FIELD_POSITION - 14) {
+                            if (UserSession.GAME.getBoard()[UserSession.FIELD_POSITION - 7] == 'p') {
+                                Pane oldPane4 = (Pane) childrens.get(UserSession.FIELD_POSITION - 7);
+                                ImageView oldPawn4 = (ImageView) oldPane4.getChildren().get(0);
+                                UserSession.PAWN_CLICKED = false;
+                                oldPawn4.setImage(UserSession.BACKGROUND);
+                            }
+                        } else if (UserSession.CURRENT_POSITION == UserSession.FIELD_POSITION - 18) {
+                            if (UserSession.GAME.getBoard()[UserSession.FIELD_POSITION - 9] == 'p') {
+                                Pane oldPane5 = (Pane) childrens.get(UserSession.FIELD_POSITION - 9);
+                                ImageView oldPawn5 = (ImageView) oldPane5.getChildren().get(0);
+                                UserSession.PAWN_CLICKED = false;
+                                oldPawn5.setImage(UserSession.BACKGROUND);
+                            }
+                        }
                         ImageView oldPawn = (ImageView) oldPane.getChildren().get(0);
                         UserSession.PAWN_CLICKED = false;
                         oldPawn.setImage(UserSession.BACKGROUND);
@@ -127,14 +157,12 @@ public class FXMLGameController extends AbstractController {
 
         //wyczyszczenie pola wiadomości
         chatMessage.setText("");
-        //TODO
-//        init(null);
     }
 
     //powrót do menu gry
     @FXML
     public void goBack(ActionEvent event) throws IOException {
-        UserSession.CURRENT_SCENE =SceneNames.MENU_SCENE;
+        UserSession.CURRENT_SCENE = SceneNames.MENU_SCENE;
         gameMethods.goToScene(SceneNames.MENU_SCENE, null, event);
     }
 
@@ -210,5 +238,39 @@ public class FXMLGameController extends AbstractController {
         gameMethods.getGame(this, errorMessage);
         gameMethods.convertServerFormatToBoard(grid);
         init();
+    }
+
+    public boolean canMakeMove() {
+//        System.out.println(UserSession.FIELD_POSITION);
+//        System.out.println(UserSession.CURRENT_POSITION);
+        if (UserSession.CURRENT_POSITION == UserSession.FIELD_POSITION + 7 || UserSession.CURRENT_POSITION == UserSession.FIELD_POSITION + 9) {
+            return UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[0]);
+        } else if (UserSession.CURRENT_POSITION == UserSession.FIELD_POSITION - 7 || UserSession.CURRENT_POSITION == UserSession.FIELD_POSITION - 9) {
+            return UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[1]);
+        }
+
+        if (UserSession.CURRENT_POSITION == UserSession.FIELD_POSITION + 14) {
+            if (UserSession.GAME.getBoard()[UserSession.FIELD_POSITION + 7] == 'P') {
+//                UserSession.GAME.getBoard()[UserSession.FIELD_POSITION + 7] = 'x';
+            }
+            return UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[0]);
+        } else if (UserSession.CURRENT_POSITION == UserSession.FIELD_POSITION + 18) {
+            if (UserSession.GAME.getBoard()[UserSession.FIELD_POSITION + 9] == 'P') {
+//                UserSession.GAME.getBoard()[UserSession.FIELD_POSITION + 9] = 'x';
+            }
+            return UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[0]);
+        } else if (UserSession.CURRENT_POSITION == UserSession.FIELD_POSITION - 14) {
+            if (UserSession.GAME.getBoard()[UserSession.FIELD_POSITION + 7] == 'p') {
+//                UserSession.GAME.getBoard()[UserSession.FIELD_POSITION + 7] = 'x';
+            }
+            return UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[1]);
+        } else if (UserSession.CURRENT_POSITION == UserSession.FIELD_POSITION - 18) {
+            if (UserSession.GAME.getBoard()[UserSession.FIELD_POSITION + 9] == 'p') {
+//                UserSession.GAME.getBoard()[UserSession.FIELD_POSITION + 9] = 'x';
+            }
+            return UserSession.LOGIN.equals(UserSession.GAME.getPlayers()[1]);
+        }
+
+        return false;
     }
 }

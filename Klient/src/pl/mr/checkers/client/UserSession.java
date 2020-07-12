@@ -18,6 +18,7 @@ public class UserSession {
     public static Game GAME;
     public static String GAME_NAME;
     public static int FIELD_POSITION;
+    public static int CURRENT_POSITION;
     public static boolean PAWN_CLICKED;
 
     public static Image PAWN_BLACK = new Image("/pawnBlack.png");
