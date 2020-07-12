@@ -40,17 +40,4 @@ public class Utils
         return board;
     }
 
-  /*  public static void sleeper()
-    {
-        try
-            {
-                Thread.sleep(60000);
-            }
-        catch(InterruptedException ex)
-            {
-                Thread.currentThread().interrupt();
-            }
-        pl.mr.checkers.server.Server.deleteUselessPlayersAndGames();
-    }*/
-
 }

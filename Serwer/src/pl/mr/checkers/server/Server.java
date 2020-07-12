@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.ClassNotFoundException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
@@ -18,6 +19,7 @@ public class Server extends TimerTask
 {
     private static ServerSocket SERVER_SOCKET;
     private static int PORT = 9876;
+
     private Map<String, Game> gameTables = new HashMap<>();
     private Map<String, Date> gameTimeTable = new HashMap<>();
     private Map<String, Date> userTables = new HashMap<>();
@@ -26,8 +28,14 @@ public class Server extends TimerTask
     //TWORZENIE SERWERA ORAZ PROWADZENIE NASŁUCHU NA SOCKECIE
     public static void main(String args[]) throws IOException, ClassNotFoundException
     {
+        if(args.length == 1){
+        PORT = Integer.parseInt(args[0]);
+        }
+
         Server server = new Server();
         SERVER_SOCKET = new ServerSocket(PORT);
+
+        System.out.println("Server is now Online! IP: " + InetAddress.getLocalHost().getHostAddress() + " Port: " + SERVER_SOCKET.getLocalPort());
         System.out.println("Waiting for the client request");
 
         //włączenie timera
@@ -105,6 +113,8 @@ public class Server extends TimerTask
                 response = sendGame((Game) content); // wprowadza zmiany w planszy lub w czacie
                 break;
         }
+
+        checkLogin(gamePackage.getUser());
 
         return (GamePackage) response;
     }
@@ -217,14 +227,6 @@ public class Server extends TimerTask
             return ret;
         }
 
-
-        //Sprawdzić czy gra jest w oczekiwaniu na gracza
-//        if (!game.isPending())
-        //     {
-        //         ret.setResult("ERROR3: Game is full");
-        //         return ret;
-        //    }
-
         //Dołącz do gry
         String[] players = game.getPlayers();
         if (!(userName.equals(players[0]) || userName.equals(players[1])))
@@ -259,46 +261,27 @@ public class Server extends TimerTask
     private GamePackage sendGame(Game gameClient)
     {
         GamePackage ret = new GamePackage();
-      //  String[] players;
-      //  String playerMove;
 
         if (gameClient.getName() == null)
         {
             ret.setResult("ERROR5: Game Name is empty");
         }
-        //else
-       // {
-          //  Game gameServer = gameTables.get(gameClient.getName());
 
-           // players = gameServer.getPlayers();
+        Game gameServer = gameTables.get(gameClient.getName());
 
-           // if(gameServer.isHostTurn())
-        //    {
-        //        playerMove = players[0];
-       //    }
-        //    else
-         //   {
-         //       playerMove = players[1];
-         //   }
+        //Sprawdza czy plansze sa takie same
+        if(!Arrays.equals(gameClient.getBoard(), gameServer.getBoard()))
+        {
+            boolean hostTurn = gameServer.isHostTurn();
+            gameClient.setHostTurn(!hostTurn);
+        }
 
-           // if(playerMove == user)
-          //  {
-                //Podmienienie game
-                gameTables.put(gameClient.getName(), gameClient);
-                Game gameServer = gameTables.get(gameClient.getName());
+        //Podmienienie game
+        gameTables.put(gameClient.getName(), gameClient);
 
-                boolean hostTurn = gameServer.isHostTurn();
-                gameServer.setHostTurn(!hostTurn);
 
-                System.out.println("Host Turn? : " + gameServer.isHostTurn());
-                ret.setResult("OK");
-          //  }
-          //  else
-          //  {
-         //       System.out.println("Nie twój ruch!");
-          //      ret.setResult("Nie twój ruch!");
-          //  }
-       // }
+        System.out.println("Host Turn? : " + gameServer.isHostTurn());
+        ret.setResult("OK");
 
         return ret;
     }
@@ -312,7 +295,7 @@ public class Server extends TimerTask
         completeTask();
         counterClener++;
         //System.out.println("Timer task finished at:"+new Date());
-        System.out.println("["+counterClener+"] Usunieto tych baranow co sie nie logujom!"+ " Date: " + new Date());
+        System.out.println("["+counterClener+"] Usunieto nieaktywnych użytkowników oraz nieaktywne gry"+ " Date: " + new Date());
         long timestamp = new Date().getTime();
 
 
